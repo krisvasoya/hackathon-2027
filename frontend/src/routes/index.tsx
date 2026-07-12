@@ -19,11 +19,9 @@ const VehiclesPage    = lazy(() => import('@pages/vehicles/VehiclesPage'));
 const DriversPage     = lazy(() => import('@pages/drivers/DriversPage'));
 const TripsPage       = lazy(() => import('@pages/trips/TripsPage'));
 const TripDetailPage   = lazy(() => import('@pages/trips/TripDetailPage'));
-// const MaintenancePage = lazy(() => import('../pages/maintenance/MaintenancePage'));
-// const FuelPage        = lazy(() => import('../pages/fuel/FuelPage'));
-// const ReportsPage     = lazy(() => import('../pages/reports/ReportsPage'));
-// const UsersPage       = lazy(() => import('../pages/admin/UsersPage'));
-// const SettingsPage    = lazy(() => import('../pages/settings/SettingsPage'));
+const MaintenancePage = lazy(() => import('@pages/maintenance/MaintenancePage'));
+const FuelPage        = lazy(() => import('@pages/fuel/FuelPage'));
+const ExpensePage     = lazy(() => import('@pages/expense/ExpensePage'));
 
 // ─── Suspense Wrapper ─────────────────────────────────────────────────────────
 
@@ -101,7 +99,30 @@ const router = createBrowserRouter([
           </SuspenseWrapper>
         ),
       },
-      // Phase 2+ routes will be added here
+      {
+        path: ROUTES.MAINTENANCE,
+        element: (
+          <SuspenseWrapper>
+            <MaintenancePage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: ROUTES.FUEL,
+        element: (
+          <SuspenseWrapper>
+            <FuelPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: ROUTES.EXPENSES,
+        element: (
+          <SuspenseWrapper>
+            <ExpensePage />
+          </SuspenseWrapper>
+        ),
+      },
     ],
   },
 

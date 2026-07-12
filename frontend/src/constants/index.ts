@@ -23,6 +23,7 @@ export const ROUTES = {
   TRIP_DETAILS: '/trips/:id',
   MAINTENANCE: '/maintenance',
   FUEL: '/fuel',
+  EXPENSES: '/expenses',
   REPORTS: '/reports',
   USERS: '/admin/users',
   SETTINGS: '/settings',
@@ -59,4 +60,5 @@ export const QUERY_KEYS = {
   TRIPS: ['trips'],
   MAINTENANCE: ['maintenance'],
   FUEL: ['fuel'],
+  EXPENSES: ['expenses'],
 } as const;

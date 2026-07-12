@@ -174,6 +174,92 @@ export interface Trip {
   };
 }
 
+// ─── Maintenance, Fuel, & Expense Types ────────────────────────────────────────
+
+export type MaintenanceStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+export interface Maintenance {
+  id: string;
+  maintenanceNumber: string;
+  vehicleId: string;
+  maintenanceType: string;
+  description: string;
+  priority: string;
+  scheduledDate: string;
+  completedDate: string | null;
+  estimatedCost: string;
+  actualCost: string | null;
+  workshopName: string;
+  technicianName: string;
+  notes: string | null;
+  status: MaintenanceStatus;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+
+  vehicle?: {
+    id: string;
+    registrationNumber: string;
+    vehicleName: string;
+    status: string;
+  };
+  creator?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+}
+
+export interface FuelLog {
+  id: string;
+  vehicleId: string;
+  tripId: string | null;
+  liters: number;
+  pricePerLiter: number;
+  totalCost: string;
+  odometer: number;
+  fuelStation: string;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+
+  vehicle?: {
+    id: string;
+    registrationNumber: string;
+    vehicleName: string;
+  };
+  trip?: {
+    id: string;
+    tripNumber: string;
+    source: string;
+    destination: string;
+  };
+}
+
+export interface Expense {
+  id: string;
+  vehicleId: string;
+  tripId: string | null;
+  expenseType: string;
+  amount: string;
+  description: string;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+
+  vehicle?: {
+    id: string;
+    registrationNumber: string;
+    vehicleName: string;
+  };
+  trip?: {
+    id: string;
+    tripNumber: string;
+    source: string;
+    destination: string;
+  };
+}
+
 // ─── UI Component Base Types ──────────────────────────────────────────────────
 
 export type StatusVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral';

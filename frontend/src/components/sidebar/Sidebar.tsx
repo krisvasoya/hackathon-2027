@@ -7,6 +7,7 @@ import {
   Route,
   Wrench,
   Fuel,
+  DollarSign,
   BarChart3,
   Settings,
   ShieldCheck,
@@ -54,6 +55,12 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Fuel',
     path: ROUTES.FUEL,
     icon: Fuel,
+    allowedRoles: ['SUPER_ADMIN', 'FLEET_MANAGER', 'FINANCIAL_ANALYST', 'DRIVER'],
+  },
+  {
+    label: 'Expenses',
+    path: ROUTES.EXPENSES,
+    icon: DollarSign,
     allowedRoles: ['SUPER_ADMIN', 'FLEET_MANAGER', 'FINANCIAL_ANALYST'],
   },
   {
