@@ -22,8 +22,8 @@ import { userService, UpdateUserInput } from '../../services/user.service';
 import { Card, CardBody, Button, Badge } from '../../components/ui';
 import { User, UserRole, UserStatus } from '../../types';
 import { ROLE_LABELS } from '../../constants';
-import { formatDate } from '../../utils';
-import { cn } from '../../utils';
+import { formatDate, cn } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // ─── Status / Role Badge Maps ─────────────────────────────────────────────────
 
@@ -85,6 +85,10 @@ export default function UsersPage(): React.JSX.Element {
     // If backend /users doesn't exist yet, fall back gracefully
     retry: false,
   });
+
+  if (isLoading || !data) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={false} />;
+  }
 
   // ─── Mutations ────────────────────────────────────────────────────────────
 
@@ -197,22 +201,7 @@ export default function UsersPage(): React.JSX.Element {
 
       {/* ─── Table ────────────────────────────────────────────────────────── */}
       <Card>
-        {isLoading ? (
-          <div className="p-6 space-y-3 animate-pulse">
-            <div className="h-8 bg-surface rounded w-full" />
-            {[1,2,3,4,5].map(i => (
-              <div key={i} className="flex gap-4 items-center py-3 border-b border-border">
-                <div className="w-8 h-8 rounded-full bg-surface flex-shrink-0" />
-                <div className="flex-1 space-y-1.5">
-                  <div className="h-3.5 bg-surface rounded w-1/3" />
-                  <div className="h-3 bg-surface rounded w-1/2" />
-                </div>
-                <div className="h-5 bg-surface rounded w-16" />
-                <div className="h-5 bg-surface rounded w-20" />
-              </div>
-            ))}
-          </div>
-        ) : users.length === 0 ? (
+        {users.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
             <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center border border-border">
               <Shield size={24} className="text-text-muted" />
@@ -327,7 +316,7 @@ export default function UsersPage(): React.JSX.Element {
         )}
 
         {/* ─── Pagination ─────────────────────────────────────────────────── */}
-        {pagination && pagination.totalPages > 1 && (
+        {data?.pagination && data.pagination.totalPages > 1 && (
           <div className="px-6 py-3 border-t border-border flex items-center justify-between bg-surface/50">
             <p className="text-xs text-text-secondary">
               Showing {(page - 1) * 20 + 1}–{Math.min(page * 20, pagination.total)} of {pagination.total} users

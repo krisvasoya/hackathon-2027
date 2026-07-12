@@ -5,7 +5,7 @@ import { Bell, Search, LogOut, ChevronDown, User, X, ExternalLink } from 'lucide
 import { useAuth } from '../../contexts/AuthContext';
 import { Avatar, LoadingSpinner } from '../ui';
 import { ROUTES, ROLE_LABELS } from '../../constants';
-import { cn } from '../../utils';
+import { cn, formatCurrency } from '../../utils';
 import { notificationService } from '../../services/notification.service';
 import { searchService, SearchResult } from '../../services/search.service';
 
@@ -475,7 +475,7 @@ export function TopNavbar(): React.JSX.Element {
                             className="px-3 py-2 hover:bg-white cursor-pointer transition-colors text-xs flex justify-between items-center"
                           >
                             <span className="font-medium">{f.fuelStation}</span>
-                            <span className="font-semibold text-text-primary">${Number(f.totalCost).toLocaleString()}</span>
+                            <span className="font-semibold text-text-primary">{formatCurrency(f.totalCost)}</span>
                           </div>
                         ))}
                       </div>
@@ -497,7 +497,7 @@ export function TopNavbar(): React.JSX.Element {
                             className="px-3 py-2 hover:bg-white cursor-pointer transition-colors text-xs flex justify-between items-center"
                           >
                             <span className="text-text-secondary">{e.description} ({e.expenseType})</span>
-                            <span className="font-bold text-text-primary">${Number(e.amount).toLocaleString()}</span>
+                            <span className="font-bold text-text-primary">{formatCurrency(e.amount)}</span>
                           </div>
                         ))}
                       </div>
