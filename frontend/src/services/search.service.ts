@@ -11,9 +11,10 @@ export interface SearchResult {
 }
 
 export const searchService = {
-  search: async (q: string): Promise<SearchResult> => {
+  search: async (q: string, signal?: AbortSignal): Promise<SearchResult> => {
     const { data } = await apiClient.get<ApiResponse<SearchResult>>('/search', {
       params: { q },
+      signal,
     });
     if (!data.success) throw new Error(data.message);
     return data.data;

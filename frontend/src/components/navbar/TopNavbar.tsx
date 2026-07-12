@@ -51,12 +51,23 @@ export function TopNavbar(): React.JSX.Element {
     refetchInterval: 15000, // Poll notifications every 15 seconds
   });
 
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Queries - Global Search
   const { data: searchResults, isLoading: isSearching } = useQuery<SearchResult>({
-    queryKey: ['global_search', searchQuery],
-    queryFn: () => searchService.search(searchQuery),
-    enabled: isSearchOpen && searchQuery.trim().length >= 1,
+    queryKey: ['global_search', debouncedSearchQuery],
+    queryFn: ({ signal }) => searchService.search(debouncedSearchQuery, signal),
+    enabled: isSearchOpen && debouncedSearchQuery.trim().length >= 1,
   });
+
+  const isSearchingOrPending = isSearching || (searchQuery.trim().length >= 1 && searchQuery !== debouncedSearchQuery);
 
   // Hotkey listener for Search: Cmd+K or Ctrl+K
   useEffect(() => {
