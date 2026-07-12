@@ -52,10 +52,7 @@ export default function LoginPage(): React.JSX.Element {
       toast.success('Welcome back!');
       navigate(returnTo, { replace: true });
     } catch (error: unknown) {
-      const err = error as { response?: { data?: { message?: string } } };
-      const message =
-        err?.response?.data?.message ?? 'Login failed. Please try again.';
-      setServerError(message);
+      setServerError('Authentication failed. Please verify your email and password.');
     }
   };
 
@@ -130,9 +127,9 @@ export default function LoginPage(): React.JSX.Element {
         <Button
           type="submit"
           variant="primary"
-          size="md"
+          size="lg"
           isLoading={isSubmitting}
-          className="w-full mt-2"
+          className="w-full mt-2 py-2.5"
         >
           {isSubmitting ? 'Signing in...' : 'Sign In'}
         </Button>
@@ -148,13 +145,23 @@ export default function LoginPage(): React.JSX.Element {
         </p>
       </div>
 
-      {/* ─── Demo Credentials (Development Only) ─── */}
-      {import.meta.env.DEV && (
-        <div className="mt-4 p-3 bg-status-info-bg border border-blue-200 rounded text-xs text-status-info">
-          <p className="font-medium mb-1">Development credentials:</p>
-          <p>admin@transitops.com / TransitOps@2024!</p>
+      {/* ─── Demo Account Card ─── */}
+      <div className="mt-5 p-3.5 bg-slate-50 border border-slate-200/60 rounded-lg text-xs animate-fade-in">
+        <div className="flex items-center gap-1.5 font-semibold text-slate-700 mb-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Demo Account
         </div>
-      )}
+        <div className="grid grid-cols-2 gap-3 text-slate-600">
+          <div>
+            <span className="text-slate-400 font-medium block text-[10px] uppercase tracking-wider mb-0.5">Email</span>
+            <code className="text-slate-800 font-mono text-[11px] select-all">admin@transitops.com</code>
+          </div>
+          <div>
+            <span className="text-slate-400 font-medium block text-[10px] uppercase tracking-wider mb-0.5">Password</span>
+            <code className="text-slate-800 font-mono text-[11px] select-all">TransitOps@2024!</code>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
