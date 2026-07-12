@@ -14,7 +14,7 @@ import { maintenanceService } from '../../services/maintenance.service';
 import { expenseService } from '../../services/expense.service';
 import { dashboardService } from '../../services/dashboard.service';
 import { auditService } from '../../services/audit.service';
-import { Card, CardBody, Button, LoadingSpinner, Badge } from '../../components/ui';
+import { Card, CardBody, Button, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { formatDate } from '../../utils';
 
@@ -461,9 +461,19 @@ export default function ReportsPage(): React.JSX.Element {
       {/* Reports Table Layout */}
       <Card>
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Generating spreadsheet record dossier...</p>
+          <div className="p-6 space-y-4 animate-pulse">
+            {/* Mock Table Header skeleton */}
+            <div className="h-8 bg-surface rounded w-full mb-4" />
+            {/* Mock Rows skeleton */}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex gap-4 items-center py-3 border-b border-border">
+                <div className="h-4 bg-surface rounded w-1/4" />
+                <div className="h-4 bg-surface rounded w-1/4" />
+                <div className="h-4 bg-surface rounded w-1/6" />
+                <div className="h-4 bg-surface rounded w-1/6" />
+                <div className="h-4 bg-surface rounded w-1/12" />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="overflow-x-auto">

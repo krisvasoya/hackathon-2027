@@ -349,14 +349,14 @@ export function TopNavbar(): React.JSX.Element {
 
             {/* Results lists */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {isSearching && (
+              {isSearchingOrPending && (
                 <div className="flex flex-col items-center justify-center py-10 gap-2">
                   <LoadingSpinner size="md" />
                   <p className="text-xs text-text-secondary animate-pulse">Running enterprise search...</p>
                 </div>
               )}
 
-              {!isSearching && !searchQuery.trim() && (
+              {!isSearchingOrPending && !searchQuery.trim() && (
                 <div className="text-center py-10 text-xs text-text-muted flex flex-col items-center gap-1.5">
                   <Search size={24} className="text-text-muted" />
                   <p className="font-bold text-text-primary">Global Fleet Search</p>
@@ -364,7 +364,7 @@ export function TopNavbar(): React.JSX.Element {
                 </div>
               )}
 
-              {!isSearching && searchQuery.trim() && searchResults && (
+              {!isSearchingOrPending && searchQuery.trim() && searchResults && (
                 <div className="space-y-4">
                   {/* Vehicles */}
                   {(searchFilter === 'all' || searchFilter === 'vehicles') && searchResults.vehicles.length > 0 && (
