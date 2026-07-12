@@ -71,7 +71,7 @@ export const SkInput = memo(function SkInput({ className }: SkeletonProps) {
 
 // ─── KPI stat card ────────────────────────────────────────────────────────────
 
-export const SkStatCard = memo(function SkStatCard({ accent = false }: { accent?: boolean }) {
+export const SkStatCard = memo(function SkStatCard() {
   return (
     <div
       className="bg-white border border-border rounded shadow-card p-4 space-y-2"

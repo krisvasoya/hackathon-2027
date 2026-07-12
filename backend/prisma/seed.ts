@@ -259,13 +259,15 @@ async function main(): Promise<void> {
 
   const usedRegNums = new Set<string>();
   const vehicles = [];
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < 40; i++) {
     const vInfo = vehicleData[i % vehicleData.length];
     const model = vInfo.models[i % vInfo.models.length];
     const prefix = registrationPrefixes[i % registrationPrefixes.length];
     let regNum: string;
     do {
-      regNum = `${prefix}-${String(rndInt(1000, 9999))}`;
+      const series = letters[Math.floor(Math.random() * 26)] + letters[Math.floor(Math.random() * 26)];
+      regNum = `${prefix}-${series}-${String(rndInt(1000, 9999))}`;
     } while (usedRegNums.has(regNum));
     usedRegNums.add(regNum);
 
@@ -334,12 +336,12 @@ async function main(): Promise<void> {
         licenseNumber,
         licenseCategory: licenseCategories[i % licenseCategories.length],
         licenseExpiryDate: daysFromNow(driverStatusDist[i] === 'SUSPENDED' ? rndInt(-90, 0) : rndInt(90, 1460)),
-        phoneNumber: `+91-${rndInt(70000, 99999)}-${rndInt(10000, 99999)}`,
+        phoneNumber: `+91 ${rndInt(70000, 99999)} ${rndInt(10000, 99999)}`,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i + 1}@transitops-drivers.com`,
         safetyScore,
         yearsOfExperience: yearsExp,
         address: addresses[i % addresses.length],
-        emergencyContact: `+91-${rndInt(70000, 99999)}-${rndInt(10000, 99999)}`,
+        emergencyContact: `+91 ${rndInt(70000, 99999)} ${rndInt(10000, 99999)}`,
         status: driverStatusDist[i],
         notes: driverStatusDist[i] === 'SUSPENDED' ? 'Pending safety re-certification' : null,
       },
