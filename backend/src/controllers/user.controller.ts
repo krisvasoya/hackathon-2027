@@ -52,9 +52,9 @@ export class UserController {
     try {
       const { id } = req.params;
       const authReq = req as AuthenticatedRequest;
-      const operatorId = authReq.user!.id;
+      const operatorId = authReq.user!.sub;
       const ipAddress = req.ip || '127.0.0.1';
-      const userAgent = req.headers['user-agent'] || 'unknown';
+      const userAgent = (req.headers['user-agent'] as string) || 'unknown';
 
       const updated = await this.userService.updateUser(
         id,
@@ -75,9 +75,9 @@ export class UserController {
       const { id } = req.params;
       const { status } = req.body;
       const authReq = req as AuthenticatedRequest;
-      const operatorId = authReq.user!.id;
+      const operatorId = authReq.user!.sub;
       const ipAddress = req.ip || '127.0.0.1';
-      const userAgent = req.headers['user-agent'] || 'unknown';
+      const userAgent = (req.headers['user-agent'] as string) || 'unknown';
 
       const updated = await this.userService.updateUser(
         id,
@@ -97,9 +97,9 @@ export class UserController {
     try {
       const { id } = req.params;
       const authReq = req as AuthenticatedRequest;
-      const operatorId = authReq.user!.id;
+      const operatorId = authReq.user!.sub;
       const ipAddress = req.ip || '127.0.0.1';
-      const userAgent = req.headers['user-agent'] || 'unknown';
+      const userAgent = (req.headers['user-agent'] as string) || 'unknown';
 
       await this.userService.resetPassword(id, operatorId, ipAddress, userAgent);
       sendSuccess(res, null, 'Password reset process initiated.');
