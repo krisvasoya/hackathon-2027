@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
+import { getInitials } from '../../utils';
 
 export default function SettingsPage(): React.JSX.Element {
   const { user } = useAuth();
@@ -322,7 +323,7 @@ export default function SettingsPage(): React.JSX.Element {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-brand-light flex items-center justify-center border border-brand/20">
                   <span className="text-sm font-semibold text-brand">
-                    {user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}` : 'TO'}
+                    {getInitials(user?.firstName, user?.lastName)}
                   </span>
                 </div>
                 <div>
