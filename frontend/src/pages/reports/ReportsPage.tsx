@@ -5,6 +5,7 @@ import {
   Download,
   Search,
   SlidersHorizontal,
+  BarChart3,
 } from 'lucide-react';
 import { vehicleService } from '../../services/vehicle.service';
 import { driverService } from '../../services/driver.service';
@@ -17,6 +18,60 @@ import { auditService } from '../../services/audit.service';
 import { Card, CardBody, Button, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { formatDate } from '../../utils';
+
+// ─── Badge Helpers ─────────────────────────────────────────────────────────────
+
+const VEHICLE_STATUS_MAP: Record<string, { label: string; variant: 'success' | 'info' | 'warning' | 'danger' | 'neutral' }> = {
+  AVAILABLE: { label: 'Available',  variant: 'success' },
+  ON_TRIP:   { label: 'On Trip',    variant: 'info'    },
+  IN_SHOP:   { label: 'In Shop',    variant: 'warning' },
+  RETIRED:   { label: 'Retired',    variant: 'neutral' },
+};
+
+const DRIVER_STATUS_MAP: Record<string, { label: string; variant: 'success' | 'info' | 'warning' | 'danger' | 'neutral' }> = {
+  AVAILABLE: { label: 'Available', variant: 'success' },
+  ON_TRIP:   { label: 'On Trip',   variant: 'info'    },
+  OFF_DUTY:  { label: 'Off Duty',  variant: 'warning' },
+  SUSPENDED: { label: 'Suspended', variant: 'danger'  },
+};
+
+const TRIP_STATUS_MAP: Record<string, { label: string; variant: 'success' | 'info' | 'warning' | 'danger' | 'neutral' }> = {
+  COMPLETED:  { label: 'Completed',  variant: 'success' },
+  DISPATCHED: { label: 'Dispatched', variant: 'info'    },
+  DRAFT:      { label: 'Draft',      variant: 'neutral' },
+  CANCELLED:  { label: 'Cancelled',  variant: 'danger'  },
+};
+
+const MAINT_STATUS_MAP: Record<string, { label: string; variant: 'success' | 'info' | 'warning' | 'danger' | 'neutral' }> = {
+  COMPLETED:   { label: 'Completed',   variant: 'success' },
+  IN_PROGRESS: { label: 'In Progress', variant: 'info'    },
+  PENDING:     { label: 'Pending',     variant: 'warning' },
+  CANCELLED:   { label: 'Cancelled',   variant: 'danger'  },
+};
+
+function StatusBadge({ status, map }: { status: string; map: Record<string, { label: string; variant: any }> }) {
+  const cfg = map[status] ?? { label: status, variant: 'neutral' as const };
+  return <Badge variant={cfg.variant} dot>{cfg.label}</Badge>;
+}
+
+function EmptyState({ onGenerate }: { onGenerate?: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+      <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center border border-border">
+        <BarChart3 size={24} className="text-text-muted" />
+      </div>
+      <div>
+        <p className="text-sm font-semibold text-text-primary">No reports available.</p>
+        <p className="text-xs text-text-secondary mt-1">Create data to generate reports.</p>
+      </div>
+      {onGenerate && (
+        <Button variant="primary" size="sm" onClick={onGenerate}>
+          Generate Report
+        </Button>
+      )}
+    </div>
+  );
+}
 
 type ReportTab =
   | 'vehicle'
@@ -478,16 +533,19 @@ export default function ReportsPage(): React.JSX.Element {
         ) : (
           <div className="overflow-x-auto">
             {activeTab === 'vehicle' && vehicleData && (
+              vehicleData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Asset Name</th>
-                    <th className="px-6 py-3">Model</th>
-                    <th className="px-6 py-3">Plate Number</th>
-                    <th className="px-6 py-3">Type</th>
-                    <th className="px-6 py-3">Odometer</th>
-                    <th className="px-6 py-3">Region</th>
-                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3.5">Asset Name</th>
+                    <th className="px-6 py-3.5">Model</th>
+                    <th className="px-6 py-3.5">Plate Number</th>
+                    <th className="px-6 py-3.5">Type</th>
+                    <th className="px-6 py-3.5">Odometer</th>
+                    <th className="px-6 py-3.5">Region</th>
+                    <th className="px-6 py-3.5">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -500,27 +558,30 @@ export default function ReportsPage(): React.JSX.Element {
                       <td className="px-6 py-3.5 text-text-secondary">{v.currentOdometer.toLocaleString()} km</td>
                       <td className="px-6 py-3.5 text-text-secondary">{v.region}</td>
                       <td className="px-6 py-3.5">
-                        <Badge variant={v.status === 'AVAILABLE' ? 'success' : v.status === 'IN_SHOP' ? 'warning' : 'info'}>
-                          {v.status}
-                        </Badge>
+                        <StatusBadge status={v.status} map={VEHICLE_STATUS_MAP} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'vehicle' && !vehicleData && !isLoading && <EmptyState />}
 
             {activeTab === 'driver' && driverData && (
+              driverData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Full Name</th>
-                    <th className="px-6 py-3">Employee ID</th>
-                    <th className="px-6 py-3">License Number</th>
-                    <th className="px-6 py-3">Expiry Date</th>
-                    <th className="px-6 py-3">Phone</th>
-                    <th className="px-6 py-3">Safety Score</th>
-                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3.5">Full Name</th>
+                    <th className="px-6 py-3.5">Employee ID</th>
+                    <th className="px-6 py-3.5">License Number</th>
+                    <th className="px-6 py-3.5">Expiry Date</th>
+                    <th className="px-6 py-3.5">Phone</th>
+                    <th className="px-6 py-3.5">Safety Score</th>
+                    <th className="px-6 py-3.5">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -533,27 +594,30 @@ export default function ReportsPage(): React.JSX.Element {
                       <td className="px-6 py-3.5 text-text-secondary text-xs">{d.phoneNumber}</td>
                       <td className="px-6 py-3.5 text-text-secondary font-semibold">{d.safetyScore}/100</td>
                       <td className="px-6 py-3.5">
-                        <Badge variant={d.status === 'AVAILABLE' ? 'success' : d.status === 'SUSPENDED' ? 'danger' : 'info'}>
-                          {d.status}
-                        </Badge>
+                        <StatusBadge status={d.status} map={DRIVER_STATUS_MAP} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'driver' && !driverData && !isLoading && <EmptyState />}
 
             {activeTab === 'trip' && tripData && (
+              tripData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Trip Number</th>
-                    <th className="px-6 py-3">Source</th>
-                    <th className="px-6 py-3">Destination</th>
-                    <th className="px-6 py-3">Cargo Weight</th>
-                    <th className="px-6 py-3">Revenue</th>
-                    <th className="px-6 py-3">Status</th>
-                    <th className="px-6 py-3">Start Date</th>
+                    <th className="px-6 py-3.5">Trip Number</th>
+                    <th className="px-6 py-3.5">Source</th>
+                    <th className="px-6 py-3.5">Destination</th>
+                    <th className="px-6 py-3.5">Cargo Weight</th>
+                    <th className="px-6 py-3.5">Revenue</th>
+                    <th className="px-6 py-3.5">Status</th>
+                    <th className="px-6 py-3.5">Start Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -563,29 +627,32 @@ export default function ReportsPage(): React.JSX.Element {
                       <td className="px-6 py-3.5 text-text-secondary">{t.source}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{t.destination}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{t.cargoWeight.toLocaleString()} kg</td>
-                      <td className="px-6 py-3.5 font-semibold">${Number(t.tripRevenue).toLocaleString()}</td>
+                      <td className="px-6 py-3.5 font-semibold">₹{Number(t.tripRevenue).toLocaleString()}</td>
                       <td className="px-6 py-3.5">
-                        <Badge variant={t.status === 'COMPLETED' ? 'success' : t.status === 'CANCELLED' ? 'danger' : 'info'}>
-                          {t.status}
-                        </Badge>
+                        <StatusBadge status={t.status} map={TRIP_STATUS_MAP} />
                       </td>
                       <td className="px-6 py-3.5 text-text-secondary text-xs">{t.tripStartTime ? formatDate(t.tripStartTime) : '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'trip' && !tripData && !isLoading && <EmptyState />}
 
             {activeTab === 'fuel' && fuelData && (
+              fuelData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Vehicle</th>
-                    <th className="px-6 py-3">Fuel Station</th>
-                    <th className="px-6 py-3">Liters (L)</th>
-                    <th className="px-6 py-3">Price / Liter</th>
-                    <th className="px-6 py-3">Total Cost</th>
-                    <th className="px-6 py-3">Refuel Date</th>
+                    <th className="px-6 py-3.5">Vehicle</th>
+                    <th className="px-6 py-3.5">Fuel Station</th>
+                    <th className="px-6 py-3.5">Liters (L)</th>
+                    <th className="px-6 py-3.5">Price / Liter</th>
+                    <th className="px-6 py-3.5">Total Cost</th>
+                    <th className="px-6 py-3.5">Refuel Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -594,27 +661,32 @@ export default function ReportsPage(): React.JSX.Element {
                       <td className="px-6 py-3.5 font-medium">{f.vehicle?.vehicleName || '—'}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{f.fuelStation}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{f.liters} L</td>
-                      <td className="px-6 py-3.5 text-text-secondary">${Number(f.pricePerLiter).toFixed(2)}</td>
-                      <td className="px-6 py-3.5 font-semibold">${Number(f.totalCost).toLocaleString()}</td>
+                      <td className="px-6 py-3.5 text-text-secondary">₹{Number(f.pricePerLiter).toFixed(2)}</td>
+                      <td className="px-6 py-3.5 font-semibold">₹{Number(f.totalCost).toLocaleString()}</td>
                       <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(f.date)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'fuel' && !fuelData && !isLoading && <EmptyState />}
 
             {activeTab === 'maintenance' && maintenanceData && (
+              maintenanceData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Ticket Number</th>
-                    <th className="px-6 py-3">Vehicle</th>
-                    <th className="px-6 py-3">Type</th>
-                    <th className="px-6 py-3">Priority</th>
-                    <th className="px-6 py-3">Scheduled Date</th>
-                    <th className="px-6 py-3">Workshop</th>
-                    <th className="px-6 py-3">Actual Cost</th>
-                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3.5">Ticket Number</th>
+                    <th className="px-6 py-3.5">Vehicle</th>
+                    <th className="px-6 py-3.5">Type</th>
+                    <th className="px-6 py-3.5">Priority</th>
+                    <th className="px-6 py-3.5">Scheduled Date</th>
+                    <th className="px-6 py-3.5">Workshop</th>
+                    <th className="px-6 py-3.5">Actual Cost</th>
+                    <th className="px-6 py-3.5">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -630,27 +702,30 @@ export default function ReportsPage(): React.JSX.Element {
                       </td>
                       <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(m.scheduledDate)}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{m.workshopName}</td>
-                      <td className="px-6 py-3.5 text-text-secondary">{m.actualCost ? `$${Number(m.actualCost).toLocaleString()}` : '—'}</td>
+                      <td className="px-6 py-3.5 text-text-secondary">{m.actualCost ? `₹${Number(m.actualCost).toLocaleString()}` : '—'}</td>
                       <td className="px-6 py-3.5">
-                        <Badge variant={m.status === 'COMPLETED' ? 'success' : m.status === 'CANCELLED' ? 'danger' : 'info'}>
-                          {m.status}
-                        </Badge>
+                        <StatusBadge status={m.status} map={MAINT_STATUS_MAP} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'maintenance' && !maintenanceData && !isLoading && <EmptyState />}
 
             {activeTab === 'expense' && expenseData && (
+              expenseData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Vehicle</th>
-                    <th className="px-6 py-3">Category</th>
-                    <th className="px-6 py-3">Amount</th>
-                    <th className="px-6 py-3">Description</th>
-                    <th className="px-6 py-3">Transaction Date</th>
+                    <th className="px-6 py-3.5">Vehicle</th>
+                    <th className="px-6 py-3.5">Category</th>
+                    <th className="px-6 py-3.5">Amount</th>
+                    <th className="px-6 py-3.5">Description</th>
+                    <th className="px-6 py-3.5">Transaction Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -658,18 +733,20 @@ export default function ReportsPage(): React.JSX.Element {
                     <tr key={e.id} className="table-row-hover">
                       <td className="px-6 py-3.5 font-medium">{e.vehicle?.vehicleName || '—'}</td>
                       <td className="px-6 py-3.5">
-                        <Badge variant={e.expenseType === 'Fuel' ? 'info' : e.expenseType === 'Maintenance' ? 'warning' : 'neutral'}>
+                        <Badge variant={e.expenseType === 'Fuel' ? 'info' : e.expenseType === 'Repair' ? 'warning' : 'neutral'}>
                           {e.expenseType}
                         </Badge>
                       </td>
-                      <td className="px-6 py-3.5 font-semibold">${Number(e.amount).toLocaleString()}</td>
+                      <td className="px-6 py-3.5 font-semibold">₹{Number(e.amount).toLocaleString()}</td>
                       <td className="px-6 py-3.5 text-text-secondary">{e.description}</td>
                       <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(e.date)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'expense' && !expenseData && !isLoading && <EmptyState />}
 
             {activeTab === 'summary' && summaryData && (
               <table className="w-full text-left text-sm text-text-primary">
@@ -713,14 +790,17 @@ export default function ReportsPage(): React.JSX.Element {
             )}
 
             {activeTab === 'audit' && auditData && (
+              auditData.data.length === 0 ? (
+                <EmptyState />
+              ) : (
               <table className="w-full text-left text-sm text-text-primary">
                 <thead className="bg-surface text-text-secondary border-b border-border font-medium">
                   <tr>
-                    <th className="px-6 py-3">Date</th>
-                    <th className="px-6 py-3">Action</th>
-                    <th className="px-6 py-3">Resource</th>
-                    <th className="px-6 py-3">Resource ID</th>
-                    <th className="px-6 py-3">Triggered By</th>
+                    <th className="px-6 py-3.5">Date</th>
+                    <th className="px-6 py-3.5">Action</th>
+                    <th className="px-6 py-3.5">Resource</th>
+                    <th className="px-6 py-3.5">Resource ID</th>
+                    <th className="px-6 py-3.5">Triggered By</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-white">
@@ -737,7 +817,9 @@ export default function ReportsPage(): React.JSX.Element {
                   ))}
                 </tbody>
               </table>
+              )
             )}
+            {activeTab === 'audit' && !auditData && !isLoading && <EmptyState />}
           </div>
         )}
       </Card>
