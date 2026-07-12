@@ -10,7 +10,7 @@ export function AuthLayout(): React.JSX.Element {
     <div className="min-h-screen bg-surface flex flex-col">
       {/* ─── Auth Header ─── */}
       <div className="flex items-center gap-2.5 px-8 h-[60px] border-b border-border bg-white">
-        <img src="/logo.png" alt="TransitOps Logo" className="h-7 w-7 object-contain" />
+        <img src="/assets/logo.png" alt="TransitOps Logo" className="h-7 w-7 object-contain" />
         <span className="text-sm font-bold text-text-primary">TransitOps</span>
         <span className="text-text-muted text-sm ml-1">Enterprise</span>
       </div>
