@@ -155,7 +155,6 @@ export default function UsersPage(): React.JSX.Element {
   };
 
   const users: User[] = data?.data ?? [];
-  const pagination    = data?.pagination;
 
   return (
     <div className="space-y-6">
@@ -340,22 +339,22 @@ export default function UsersPage(): React.JSX.Element {
         {data?.pagination && data.pagination.totalPages > 1 && (
           <div className="px-6 py-3 border-t border-border flex items-center justify-between bg-surface/50">
             <p className="text-xs text-text-secondary">
-              Showing {(page - 1) * 20 + 1}–{Math.min(page * 20, pagination.total)} of {pagination.total} users
+              Showing {(page - 1) * 20 + 1}–{Math.min(page * 20, data.pagination.total)} of {data.pagination.total} users
             </p>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={!pagination.hasPrevPage}
+                disabled={!data.pagination.hasPrevPage}
                 className="p-1.5 rounded text-text-secondary hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft size={15} />
               </button>
               <span className="text-xs font-medium px-2">
-                {page} / {pagination.totalPages}
+                {page} / {data.pagination.totalPages}
               </span>
               <button
-                onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
-                disabled={!pagination.hasNextPage}
+                onClick={() => setPage(p => Math.min(data.pagination.totalPages, p + 1))}
+                disabled={!data.pagination.hasNextPage}
                 className="p-1.5 rounded text-text-secondary hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight size={15} />
