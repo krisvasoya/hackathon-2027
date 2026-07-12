@@ -69,6 +69,8 @@ export function formatCurrency(value: number, currency = 'USD'): string {
   }).format(value);
 }
 
+export * from './currency';
+
 // ─── String Utils ─────────────────────────────────────────────────────────────
 
 export function getInitials(firstName?: string | null, lastName?: string | null): string {
