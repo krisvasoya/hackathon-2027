@@ -18,10 +18,11 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import { maintenanceService, MaintenanceInput, CompleteMaintenanceInput } from '../../services/maintenance.service';
 import { vehicleService } from '../../services/vehicle.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { Maintenance, MaintenanceStatus } from '../../types';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // Zod Schema for Scheduling
 const scheduleSchema = z.object({
@@ -245,6 +246,10 @@ export default function MaintenancePage(): React.JSX.Element {
   // Filter list of vehicles down to AVAILABLE ones for scheduling form
   const availableVehicles = vehiclesData?.data.filter((v) => v.status === 'AVAILABLE') || [];
 
+  if (isLoading || !data) {
+    return <SkListPage rows={10} cols={7} filters={3} hasButton={isEditor} />;
+  }
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -364,24 +369,19 @@ export default function MaintenancePage(): React.JSX.Element {
         </CardBody>
       </Card>
 
-      {/* Data Table */}
+      {/* ─── Table / Grid Area ─── */}
       <Card>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Loading maintenance dossier...</p>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
             <h3 className="font-semibold">Failed to load maintenance logs</h3>
-            <p className="text-xs text-text-secondary mt-1">{(error as Error).message}</p>
+            <p className="text-xs text-text-secondary mt-1">{(error as Error).message || 'Database connection error'}</p>
           </div>
         ) : !data || data.data.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-6">
             <Wrench size={40} className="text-text-muted mb-3" />
-            <h3 className="text-sm font-semibold text-text-primary">No maintenance records found</h3>
-            <p className="text-xs text-text-secondary mt-1">Schedule a ticket to book repair bays.</p>
+            <h3 className="text-sm font-semibold text-text-primary">No records found</h3>
+            <p className="text-xs text-text-secondary mt-1">Schedule a service to generate maintenance work orders.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -420,9 +420,9 @@ export default function MaintenancePage(): React.JSX.Element {
                         {ticket.priority}
                       </Badge>
                     </td>
-                    <td className="px-6 py-3.5 text-text-secondary">${Number(ticket.estimatedCost).toLocaleString()}</td>
+                    <td className="px-6 py-3.5 text-text-secondary">{formatCurrency(ticket.estimatedCost)}</td>
                     <td className="px-6 py-3.5 text-text-secondary">
-                      {ticket.actualCost !== null ? `$${Number(ticket.actualCost).toLocaleString()}` : '—'}
+                      {ticket.actualCost !== null ? formatCurrency(ticket.actualCost) : '—'}
                     </td>
                     <td className="px-6 py-3.5">
                       <Badge variant={statusBadgeVariant(ticket.status)} dot>
@@ -564,9 +564,9 @@ export default function MaintenancePage(): React.JSX.Element {
                   required
                   error={scheduleErrors.scheduledDate?.message}
                 />
-                <Input
+                 <Input
                   {...registerSchedule('estimatedCost')}
-                  label="Estimated Cost ($)"
+                  label="Estimated Cost (₹)"
                   type="number"
                   step="any"
                   required
@@ -636,12 +636,12 @@ export default function MaintenancePage(): React.JSX.Element {
             <form onSubmit={handleSubmitComplete(onCompleteSubmit)} className="p-6 space-y-4">
               <div className="bg-surface p-3 rounded border border-border text-xs text-text-secondary space-y-1">
                 <p>Ticket Number: <strong className="text-text-primary">{completingTicket.maintenanceNumber}</strong></p>
-                <p>Scheduled cost forecast: <strong>${Number(completingTicket.estimatedCost).toLocaleString()}</strong></p>
+                <p>Scheduled cost forecast: <strong>{formatCurrency(completingTicket.estimatedCost)}</strong></p>
               </div>
 
               <Input
                 {...registerComplete('actualCost')}
-                label="Actual Cost ($)"
+                label="Actual Cost (₹)"
                 type="number"
                 step="any"
                 required

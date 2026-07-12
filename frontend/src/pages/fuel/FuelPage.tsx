@@ -11,15 +11,17 @@ import {
   AlertTriangle,
   X,
   Fuel,
+  Compass,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { fuelService, FuelLogInput } from '../../services/fuel.service';
 import { vehicleService } from '../../services/vehicle.service';
 import { tripService } from '../../services/trip.service';
-import { Card, CardBody, Button, Input, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { FuelLog } from '../../types';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // Zod Schema for Fuel logging
 const fuelSchema = z.object({
@@ -163,8 +165,12 @@ export default function FuelPage(): React.JSX.Element {
     createMutation.mutate(cleanValues);
   };
 
+  if (isLoading || !data) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />;
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Header */}
       <div className="page-header">
         <div>
@@ -257,24 +263,19 @@ export default function FuelPage(): React.JSX.Element {
         </CardBody>
       </Card>
 
-      {/* Grid List */}
+      {/*      {/* ─── Table / Grid Area ─── */}
       <Card>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Loading refuel ledger...</p>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
-            <h3 className="font-semibold">Failed to load fuel logs</h3>
-            <p className="text-xs text-text-secondary mt-1">{(error as Error).message}</p>
+            <h3 className="font-semibold">Failed to load fuel telemetry</h3>
+            <p className="text-xs text-text-secondary mt-1">{(error as Error).message || 'Database connection error'}</p>
           </div>
         ) : !data || data.data.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-            <Fuel size={40} className="text-text-muted mb-3" />
-            <h3 className="text-sm font-semibold text-text-primary">No refuel logs registered</h3>
-            <p className="text-xs text-text-secondary mt-1">Log fuel receipts to compile vehicle efficiencies.</p>
+            <Compass size={40} className="text-text-muted mb-3" />
+            <h3 className="text-sm font-semibold text-text-primary">No refuel logs found</h3>
+            <p className="text-xs text-text-secondary mt-1">Register a fuel receipt to begin cost analytics.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -303,8 +304,8 @@ export default function FuelPage(): React.JSX.Element {
                     </td>
                     <td className="px-6 py-3.5 text-text-secondary">{log.fuelStation}</td>
                     <td className="px-6 py-3.5 text-text-secondary">{log.liters} L</td>
-                    <td className="px-6 py-3.5 text-text-secondary">${Number(log.pricePerLiter).toFixed(2)}</td>
-                    <td className="px-6 py-3.5 font-semibold text-text-primary">${Number(log.totalCost).toLocaleString()}</td>
+                    <td className="px-6 py-3.5 text-text-secondary">{formatCurrency(log.pricePerLiter)}</td>
+                    <td className="px-6 py-3.5 font-semibold text-text-primary">{formatCurrency(log.totalCost)}</td>
                     <td className="px-6 py-3.5 text-text-secondary">{log.odometer} km</td>
                     <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(log.date)}</td>
                     {hasRole(['SUPER_ADMIN', 'FLEET_MANAGER']) && (
@@ -417,7 +418,7 @@ export default function FuelPage(): React.JSX.Element {
                 />
                 <Input
                   {...register('pricePerLiter')}
-                  label="Price per Liter ($)"
+                  label="Price per Liter (₹)"
                   type="number"
                   step="any"
                   required
@@ -428,7 +429,7 @@ export default function FuelPage(): React.JSX.Element {
               <div className="grid grid-cols-2 gap-4">
                 <Input
                   {...register('totalCost')}
-                  label="Total Cost ($)"
+                  label="Total Cost (₹)"
                   type="number"
                   step="any"
                   required

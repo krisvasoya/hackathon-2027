@@ -21,10 +21,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { tripService, TripInput } from '../../services/trip.service';
 import { vehicleService } from '../../services/vehicle.service';
 import { driverService } from '../../services/driver.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS, ROUTES } from '../../constants';
 import { Trip, TripStatus } from '../../types';
 import { formatDate } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // ─── Zod Schema for Trip Creation ─────────────────────────────────────────────
 const tripSchema = z.object({
@@ -211,6 +212,10 @@ export default function TripsPage(): React.JSX.Element {
   const availableVehicles = vehiclesData?.data.filter(v => v.status === 'AVAILABLE') || [];
   const availableDrivers = driversData?.data.filter(d => d.status === 'AVAILABLE' && new Date(d.licenseExpiryDate) >= new Date()) || [];
 
+  if (isLoading) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />;
+  }
+
   return (
     <div className="space-y-6">
       {/* ─── Page Header ─── */}
@@ -342,12 +347,7 @@ export default function TripsPage(): React.JSX.Element {
 
       {/* ─── Table Grid ─── */}
       <Card>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Loading transit logs...</p>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
             <h3 className="font-semibold">Failed to load Trip logs</h3>
@@ -604,7 +604,7 @@ export default function TripsPage(): React.JSX.Element {
                 />
                 <Input
                   {...register('tripRevenue')}
-                  label="Revenue Forecast ($)"
+                  label="Revenue Forecast (₹)"
                   type="number"
                   step="any"
                   required

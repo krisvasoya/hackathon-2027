@@ -23,10 +23,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { tripService } from '../../services/trip.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS, ROUTES } from '../../constants';
 import { Trip, TripStatus } from '../../types';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkDetails } from '../../components/skeleton';
 
 // Zod Schema for Trip Completion
 const completionSchema = z.object({
@@ -116,12 +117,7 @@ export default function TripDetailPage(): React.JSX.Element {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-40 gap-3">
-        <LoadingSpinner size="lg" />
-        <p className="text-sm text-text-secondary">Retrieving trip dossier...</p>
-      </div>
-    );
+    return <SkDetails rows={8} />;
   }
 
   if (error || !trip) {
@@ -337,7 +333,7 @@ export default function TripDetailPage(): React.JSX.Element {
 
               <div>
                 <p className="text-xs text-text-secondary">Foresighted Revenue</p>
-                <p className="font-semibold text-status-success mt-0.5">${Number(trip.tripRevenue).toLocaleString()}</p>
+                <p className="font-semibold text-status-success mt-0.5">{formatCurrency(trip.tripRevenue)}</p>
               </div>
 
               <div className="col-span-2 pt-2 border-t border-border">
