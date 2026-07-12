@@ -14,8 +14,8 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { ROUTES, ROLE_LABELS } from '../../constants';
-import { Badge } from '../ui';
+import { ROUTES } from '../../constants';
+
 import { cn } from '../../utils';
 import type { NavItem, UserRole } from '../../types';
 
