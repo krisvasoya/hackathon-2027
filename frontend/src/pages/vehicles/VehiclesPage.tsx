@@ -23,10 +23,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { vehicleService, VehicleInput } from '../../services/vehicle.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { Vehicle, VehicleStatus } from '../../types';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // ─── Zod Schema for Vehicle ───────────────────────────────────────────────────
 const vehicleSchema = z.object({
@@ -270,6 +271,10 @@ export default function VehiclesPage(): React.JSX.Element {
     }
   };
 
+  if (isLoading || !data) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />;
+  }
+
   return (
     <div className="space-y-6">
       {/* ─── Page Header ─── */}
@@ -375,12 +380,7 @@ export default function VehiclesPage(): React.JSX.Element {
 
       {/* ─── Table / Grid Area ─── */}
       <Card>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Fetching fleet database...</p>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
             <h3 className="font-semibold">Failed to load vehicle list</h3>
@@ -439,19 +439,21 @@ export default function VehiclesPage(): React.JSX.Element {
                   >
                     Status {sortBy === 'status' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                   </th>
-                  <th className="px-6 py-3">Insurance Exp.</th>
-                  <th className="px-6 py-3">Reg. Exp.</th>
+                  <th className="px-6 py-3 text-xs text-text-secondary">Ins. Expiry</th>
+                  <th className="px-6 py-3 text-xs text-text-secondary">Reg. Expiry</th>
                   <th className="px-6 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border bg-white">
                 {data.data.map((vehicle) => (
                   <tr key={vehicle.id} className="table-row-hover">
-                    <td className="px-6 py-3.5 font-mono text-xs font-semibold">{vehicle.registrationNumber}</td>
+                    <td className="px-6 py-3.5 font-mono text-xs font-semibold text-brand">
+                      {vehicle.registrationNumber}
+                    </td>
                     <td className="px-6 py-3.5 font-medium">{vehicle.vehicleName}</td>
                     <td className="px-6 py-3.5 text-text-secondary">{vehicle.vehicleModel}</td>
-                    <td className="px-6 py-3.5 text-text-secondary">{vehicle.vehicleType}</td>
-                    <td className="px-6 py-3.5 text-text-secondary">{vehicle.region}</td>
+                    <td className="px-6 py-3.5 text-text-secondary text-xs">{vehicle.vehicleType}</td>
+                    <td className="px-6 py-3.5 text-text-secondary text-xs">{vehicle.region}</td>
                     <td className="px-6 py-3.5 text-text-secondary">{vehicle.maximumLoadCapacity} kg</td>
                     <td className="px-6 py-3.5">
                       <Badge variant={statusBadgeVariant(vehicle.status)} dot>
@@ -596,6 +598,14 @@ export default function VehiclesPage(): React.JSX.Element {
                 <div>
                   <p className="text-xs text-text-secondary">Maximum Load Capacity</p>
                   <p className="mt-0.5">{viewingVehicle.maximumLoadCapacity} kg</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Layers size={16} className="text-text-muted" />
+                <div>
+                  <p className="text-xs text-text-secondary">Acquisition Cost</p>
+                  <p className="mt-0.5 font-medium">{formatCurrency(viewingVehicle.acquisitionCost)}</p>
                 </div>
               </div>
 
@@ -748,7 +758,7 @@ export default function VehiclesPage(): React.JSX.Element {
                 />
                 <Input
                   {...register('acquisitionCost')}
-                  label="Acquisition Cost ($)"
+                  label="Acquisition Cost (₹)"
                   type="number"
                   step="any"
                   required

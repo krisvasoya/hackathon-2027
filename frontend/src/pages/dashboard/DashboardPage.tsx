@@ -27,14 +27,15 @@ import {
   TrendingUp,
   AlertTriangle,
   PlusCircle,
-  DollarSign,
+  IndianRupee,
   Info,
   ExternalLink,
   ShieldCheck,
 } from 'lucide-react';
 import { dashboardService } from '../../services/dashboard.service';
-import { Card, CardBody, Button, LoadingSpinner, Badge } from '../../components/ui';
-import { formatDate } from '../../utils';
+import { Card, CardBody, Button, Badge } from '../../components/ui';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkDashboard } from '../../components/skeleton';
 
 export default function DashboardPage(): React.JSX.Element {
   const navigate = useNavigate();
@@ -131,12 +132,7 @@ export default function DashboardPage(): React.JSX.Element {
       </div>
 
       {isLoading || !data ? (
-        <div className="flex flex-col items-center justify-center py-32 gap-3 bg-white border border-border rounded">
-          <LoadingSpinner size="lg" />
-          <p className="text-sm text-text-secondary font-medium animate-pulse">
-            Compiling ledger, vehicle statuses, and route telemetry...
-          </p>
-        </div>
+        <SkDashboard />
       ) : (
         <>
           {/* ─── KPI Cards Grid (13 Items) ─── */}
@@ -246,7 +242,7 @@ export default function DashboardPage(): React.JSX.Element {
                   <p className="text-3xs font-bold text-text-secondary uppercase">Fuel Cost Today</p>
                   <Fuel size={14} className="text-status-warning" />
                 </div>
-                <p className="text-lg font-bold text-text-primary mt-1.5">${data.kpis.fuelCostToday.toLocaleString()}</p>
+                <p className="text-lg font-bold text-text-primary mt-1.5">{formatCurrency(data.kpis.fuelCostToday)}</p>
                 <p className="text-[10px] text-text-muted mt-1">Daily refuel expenses</p>
               </CardBody>
             </Card>
@@ -258,7 +254,7 @@ export default function DashboardPage(): React.JSX.Element {
                   <p className="text-3xs font-bold text-text-secondary uppercase">Maint Cost MTD</p>
                   <Wrench size={14} className="text-status-danger" />
                 </div>
-                <p className="text-lg font-bold text-text-primary mt-1.5">${data.kpis.maintenanceCostThisMonth.toLocaleString()}</p>
+                <p className="text-lg font-bold text-text-primary mt-1.5">{formatCurrency(data.kpis.maintenanceCostThisMonth)}</p>
                 <p className="text-[10px] text-text-muted mt-1">Monthly repair audits</p>
               </CardBody>
             </Card>
@@ -268,9 +264,9 @@ export default function DashboardPage(): React.JSX.Element {
               <CardBody className="p-4">
                 <div className="flex justify-between items-start">
                   <p className="text-3xs font-bold text-text-secondary uppercase">Total Ops Cost</p>
-                  <DollarSign size={14} className="text-brand" />
+                  <IndianRupee size={14} className="text-brand" />
                 </div>
-                <p className="text-lg font-bold text-text-primary mt-1.5">${data.kpis.totalOperationalCost.toLocaleString()}</p>
+                <p className="text-lg font-bold text-text-primary mt-1.5">{formatCurrency(data.kpis.totalOperationalCost)}</p>
                 <p className="text-[10px] text-text-muted mt-1">For selected date range</p>
               </CardBody>
             </Card>
@@ -345,7 +341,7 @@ export default function DashboardPage(): React.JSX.Element {
             <Button
               variant="secondary"
               className="bg-white border-border hover:bg-surface text-xs justify-start px-4 h-12"
-              leftIcon={<DollarSign size={15} className="text-brand" />}
+              leftIcon={<IndianRupee size={15} className="text-brand" />}
               onClick={() => handleQuickAction('/expenses')}
             >
               Add Expense
@@ -479,7 +475,7 @@ export default function DashboardPage(): React.JSX.Element {
             <Card>
               <CardBody className="p-5 space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-text-primary">Monthly Fuel Cost ($)</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-text-primary">Monthly Fuel Cost (₹)</h3>
                   <Badge variant="warning">Bar Chart</Badge>
                 </div>
                 <div className="h-64">
@@ -500,7 +496,7 @@ export default function DashboardPage(): React.JSX.Element {
             <Card>
               <CardBody className="p-5 space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-text-primary">Monthly Maintenance Cost ($)</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-text-primary">Monthly Maintenance Cost (₹)</h3>
                   <Badge variant="danger">Bar Chart</Badge>
                 </div>
                 <div className="h-64">

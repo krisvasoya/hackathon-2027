@@ -1,4 +1,5 @@
 import type { UserRole } from '../types';
+import { formatINR } from './currency';
 
 // ─── Role Permissions ─────────────────────────────────────────────────────────
 
@@ -20,27 +21,8 @@ export function hasAnyRole(userRole: UserRole, roles: UserRole[]): boolean {
   return roles.includes(userRole);
 }
 
-// ─── Date Formatting ─────────────────────────────────────────────────────────
-
-export function formatDate(date: string | Date | null | undefined): string {
-  if (!date) return '—';
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(date));
-}
-
-export function formatDateTime(date: string | Date | null | undefined): string {
-  if (!date) return '—';
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(date));
-}
+export * from './date';
+export * from './time';
 
 export function formatRelativeTime(date: string | Date | null | undefined): string {
   if (!date) return '—';
@@ -57,16 +39,11 @@ export function formatRelativeTime(date: string | Date | null | undefined): stri
 // ─── Number Formatting ────────────────────────────────────────────────────────
 
 export function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
+  return new Intl.NumberFormat('en-IN').format(value);
 }
 
-export function formatCurrency(value: number, currency = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value);
+export function formatCurrency(value: number | string | null | undefined): string {
+  return formatINR(value);
 }
 
 export * from './currency';
