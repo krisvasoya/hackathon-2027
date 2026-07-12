@@ -40,7 +40,7 @@ export class UserController {
 
   getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const user = await this.userService.getUserById(id);
       sendSuccess(res, user);
     } catch (error) {
@@ -50,7 +50,7 @@ export class UserController {
 
   updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const authReq = req as AuthenticatedRequest;
       const operatorId = authReq.user!.sub;
       const ipAddress = req.ip || '127.0.0.1';
@@ -72,7 +72,7 @@ export class UserController {
 
   updateUserStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const { status } = req.body;
       const authReq = req as AuthenticatedRequest;
       const operatorId = authReq.user!.sub;
@@ -95,7 +95,7 @@ export class UserController {
 
   resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const authReq = req as AuthenticatedRequest;
       const operatorId = authReq.user!.sub;
       const ipAddress = req.ip || '127.0.0.1';
