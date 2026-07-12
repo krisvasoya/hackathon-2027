@@ -236,7 +236,9 @@ export default function TripsPage(): React.JSX.Element {
         <CardBody className="flex flex-col md:flex-row items-center gap-4 py-4 px-5">
           {/* Search Box */}
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 text-text-muted" size={16} />
+            <span className="absolute left-3 top-0 bottom-0 flex items-center text-text-muted pointer-events-none">
+              <Search size={16} />
+            </span>
             <input
               type="text"
               placeholder="Search trip number, driver, vehicle..."

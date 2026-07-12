@@ -86,31 +86,6 @@ export default function UsersPage(): React.JSX.Element {
     retry: false,
   });
 
-  if (isLoading) {
-    return <SkListPage rows={10} cols={6} filters={3} hasButton={false} />;
-  }
-
-  if (isError) {
-    return (
-      <div className="space-y-6 font-sans">
-        <div className="page-header">
-          <div>
-            <h1 className="page-title">User Management</h1>
-            <p className="page-subtitle">Configure enterprise roles, audit privilege scopes, and toggle active status</p>
-          </div>
-        </div>
-        <Card>
-          <CardBody className="flex flex-col items-center justify-center py-16 gap-3">
-            <p className="text-sm font-semibold text-status-danger">Failed to load user management records.</p>
-            <Button variant="primary" onClick={() => refetch()}>
-              Retry Loading
-            </Button>
-          </CardBody>
-        </Card>
-      </div>
-    );
-  }
-
   // ─── Mutations ────────────────────────────────────────────────────────────
 
   const updateMutation = useMutation({
@@ -139,6 +114,31 @@ export default function UsersPage(): React.JSX.Element {
     onSuccess: () => toast.success('Password reset email sent.'),
     onError: () => toast.info('Reset password: feature available in production.'),
   });
+
+  if (isLoading) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={false} />;
+  }
+
+  if (isError) {
+    return (
+      <div className="space-y-6 font-sans">
+        <div className="page-header">
+          <div>
+            <h1 className="page-title">User Management</h1>
+            <p className="page-subtitle">Configure enterprise roles, audit privilege scopes, and toggle active status</p>
+          </div>
+        </div>
+        <Card>
+          <CardBody className="flex flex-col items-center justify-center py-16 gap-3">
+            <p className="text-sm font-semibold text-status-danger">Failed to load user management records.</p>
+            <Button variant="primary" onClick={() => refetch()}>
+              Retry Loading
+            </Button>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
 
   // ─── Handlers ─────────────────────────────────────────────────────────────
 
