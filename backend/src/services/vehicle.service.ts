@@ -95,6 +95,15 @@ export class VehicleService {
       );
     }
 
+    // Business Rule: Prevent odometer rollback
+    if (data.currentOdometer !== undefined && data.currentOdometer < vehicle.currentOdometer) {
+      throw new AppError(
+        `Business Rule Violation: New odometer reading (${data.currentOdometer} km) cannot be less than current stored value (${vehicle.currentOdometer} km).`,
+        HTTP_STATUS.BAD_REQUEST,
+        ERROR_CODES.VALIDATION_ERROR
+      );
+    }
+
     // Unique registration check if registrationNumber is changing
     if (data.registrationNumber && data.registrationNumber.toUpperCase().trim() !== vehicle.registrationNumber) {
       const existing = await this.vehicleRepository.findByRegistrationNumber(data.registrationNumber);
