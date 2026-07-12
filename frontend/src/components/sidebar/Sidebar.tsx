@@ -105,9 +105,7 @@ export function Sidebar(): React.JSX.Element {
     <aside className="fixed top-0 left-0 h-full w-[240px] bg-surface-sidebar border-r border-border flex flex-col z-30">
       {/* ─── Logo ─── */}
       <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-border flex-shrink-0">
-        <div className="w-7 h-7 bg-brand rounded flex items-center justify-center flex-shrink-0">
-          <Truck size={14} className="text-white" />
-        </div>
+        <img src="/logo.png" alt="TransitOps Logo" className="h-7 w-7 object-contain flex-shrink-0" />
         <div>
           <p className="text-sm font-bold text-text-primary leading-none">TransitOps</p>
           <p className="text-2xs text-text-muted mt-0.5">Fleet Operations</p>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Truck } from 'lucide-react';
 
 // ─── Auth Layout ──────────────────────────────────────────────────────────────
 // Used only by public pages: Login, Forgot Password.
@@ -11,9 +10,7 @@ export function AuthLayout(): React.JSX.Element {
     <div className="min-h-screen bg-surface flex flex-col">
       {/* ─── Auth Header ─── */}
       <div className="flex items-center gap-2.5 px-8 h-[60px] border-b border-border bg-white">
-        <div className="w-7 h-7 bg-brand rounded flex items-center justify-center">
-          <Truck size={14} className="text-white" />
-        </div>
+        <img src="/logo.png" alt="TransitOps Logo" className="h-7 w-7 object-contain" />
         <span className="text-sm font-bold text-text-primary">TransitOps</span>
         <span className="text-text-muted text-sm ml-1">Enterprise</span>
       </div>

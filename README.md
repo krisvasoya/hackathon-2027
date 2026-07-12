@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="C:/Users/krish%20vasoya/.gemini/antigravity-ide/brain/351b0010-7f68-478b-8302-219807bd4b9b/transitops_enterprise_logo_1783831150172.png" alt="TransitOps Logo" width="220" />
+  <img src="./logo.png" alt="TransitOps Logo" width="220" />
 </p>
 
 <h1 align="center">TransitOps</h1>
