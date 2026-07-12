@@ -7,6 +7,7 @@ import tripRoutes from './trip.routes';
 import maintenanceRoutes from './maintenance.routes';
 import fuelRoutes from './fuel.routes';
 import expenseRoutes from './expense.routes';
+import dashboardRoutes from './dashboard.routes';
 
 // ─── Root API Router ──────────────────────────────────────────────────────────
 // All routes are mounted here and imported once in app.ts.
@@ -22,5 +23,6 @@ router.use('/trips', tripRoutes);
 router.use('/maintenance', maintenanceRoutes);
 router.use('/fuel', fuelRoutes);
 router.use('/expenses', expenseRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export default router;
