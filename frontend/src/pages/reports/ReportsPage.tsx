@@ -791,6 +791,7 @@ export default function ReportsPage(): React.JSX.Element {
                 </tbody>
               </table>
               )
+            )}
             {activeTab === 'audit' && !auditData && <EmptyState />}
           </div>
       </Card>
