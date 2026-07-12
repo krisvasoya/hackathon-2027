@@ -49,26 +49,7 @@ The platform is built using a strict Repository-Service architecture on the back
 
 ---
 
-## 3. Screenshots
-
-### Operations Command Center
-`[ Screenshot Placeholder: Enterprise Cockpit Telemetry Dashboard ]`
-
-### Fleet Registry
-`[ Screenshot Placeholder: Vehicles List & Status Indicators ]`
-
-### Driver Operator Profiles
-`[ Screenshot Placeholder: Driver Directory & Safety Scores ]`
-
-### Trip Dispatches
-`[ Screenshot Placeholder: Active Route Timelines ]`
-
-### Financial Ledger Reports
-`[ Screenshot Placeholder: Exportable Expense Sheets ]`
-
----
-
-## 4. Business Workflow
+## 3. Business Workflow
 
 ```
        [ Login ]
@@ -101,7 +82,7 @@ The platform is built using a strict Repository-Service architecture on the back
 
 ---
 
-## 5. Technology Stack
+## 4. Technology Stack
 
 | Component | Stack | Modules |
 | :--- | :--- | :--- |
@@ -115,7 +96,7 @@ The platform is built using a strict Repository-Service architecture on the back
 
 ---
 
-## 6. System Architecture
+## 5. System Architecture
 
 ```
                  ┌────────────────────────────────┐
@@ -150,7 +131,7 @@ The platform is built using a strict Repository-Service architecture on the back
 
 ---
 
-## 7. Project Structure
+## 6. Project Structure
 
 ```
 TransitOps/
@@ -183,7 +164,7 @@ TransitOps/
 
 ---
 
-## 8. Installation
+## 7. Installation
 
 Configure and install the application dependencies locally:
 
@@ -199,80 +180,79 @@ npm install
 
 ---
 
+## 8. Environment Setup
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+Edit `.env` and set your local PostgreSQL database connection:
+
+```env
+NODE_ENV=development
+PORT=5000
+FRONTEND_URL=http://localhost:5173
+DATABASE_URL="postgresql://postgres:your_password@localhost:5432/transitops_dev"
+JWT_ACCESS_SECRET=replace_with_min_64_char_random_secret_access
+JWT_REFRESH_SECRET=replace_with_min_64_char_random_secret_refresh
+```
+
+---
+
 ## 9. Database Setup
 
 Configure database parameters and generate the client interface:
 
 ```bash
-# Copy and edit local environment configurations
 cd backend
-cp .env.example .env
 
-# Initialize database schema and generate schema objects
+# Generate the Prisma client
 npx prisma generate
+
+# Apply database schema migrations
 npx prisma migrate dev --name init
+
+# Seed with demo data
 npm run prisma:seed
 ```
 
 ---
 
-## 10. Running the Project
+## 10. Run Locally
 
-Run development servers locally for the packages:
+Run both servers in separate terminals:
 
 ```bash
-# Start backend API (Terminal 1)
+# Terminal 1 — Backend API
 cd backend
 npm run dev
 
-# Start frontend application (Terminal 2)
+# Terminal 2 — Frontend Application
 cd frontend
 npm run dev
 ```
 
----
-
-## 5. Access
-
-Service | URL
-
-Frontend | http://localhost:5173
-
-Backend | http://localhost:5000
-
-Health | http://localhost:5000/api/health
+| Service | URL |
+| :--- | :--- |
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:5000 |
+| Health Check | http://localhost:5000/api/health |
 
 ---
 
-## Default Credentials (Development)
+## 11. Default Credentials
 
-Role
-
-Super Admin
-
-Fleet Manager
-
-Safety Officer
-
-Financial Analyst
-
-Email
-
-admin@transitops.com
-
-fleet.manager@transitops.com
-
-safety.officer@transitops.com
-
-finance@transitops.com
-
-Password
-
-TransitOps@2024!
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| Super Admin | admin@transitops.com | TransitOps@2024! |
+| Fleet Manager | fleet.manager@transitops.com | TransitOps@2024! |
+| Safety Officer | safety.officer@transitops.com | TransitOps@2024! |
+| Financial Analyst | finance@transitops.com | TransitOps@2024! |
 
 ---
 
-## 11. API Overview
+## 12. API Overview
 
 | Context | Endpoint | HTTP Method | Access Level | Description |
 | :--- | :--- | :--- | :--- | :--- |
@@ -296,7 +276,7 @@ TransitOps@2024!
 
 ---
 
-## 12. Security Features
+## 13. Security Features
 
 - **JWT Session Security**: Stateless cookie tokens checking session parameters.
 - **Granular RBAC**: Endpoint routing checked by express role check interceptors.
@@ -307,7 +287,7 @@ TransitOps@2024!
 
 ---
 
-## 13. Performance Optimizations
+## 14. Performance Optimizations
 
 - **Prisma Indexes**: Index structures on query fields (`tripStartTime`, `scheduledDate`).
 - **Transactions**: Multi-table database updates wrapped inside Prisma `$transaction()`.
@@ -317,17 +297,16 @@ TransitOps@2024!
 
 ---
 
-## 14. Future Roadmap
+## 15. Future Roadmap
 
 - **AI Route Optimization**: Dynamic route modeling to reduce fuel use.
 - **Predictive Maintenance**: Machine learning modeling to forecast wear.
 - **GPS Integration**: Live map view showing vehicle coordinates.
 - **Mobile Application**: Mobile client app for drivers.
-- **Cloud Deployment**: Dockerized container deployment patterns.
 
 ---
 
-## 15. License
+## 16. License
 
 Developed for the Odoo Hackathon 2027.
 Created for educational, demonstration and evaluation purposes.
