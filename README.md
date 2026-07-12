@@ -54,7 +54,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Login</h2>
 
 <p align="center">
-  <img src="./screenshots/login.png" width="100%">
+  <img src="./screenshots/login.png" alt="Login Screenshot" width="100%">
 </p>
 
 ---
@@ -62,7 +62,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Enterprise Dashboard</h2>
 
 <p align="center">
-  <img src="./screenshots/dashboard.png" width="100%">
+  <img src="./screenshots/dashboard.png" alt="Enterprise Dashboard Screenshot" width="100%">
 </p>
 
 ---
@@ -70,7 +70,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Notifications Center</h2>
 
 <p align="center">
-  <img src="./screenshots/dashboard-notifications.png" width="100%">
+  <img src="./screenshots/dashboard-notifications.png" alt="Notifications Center Screenshot" width="100%">
 </p>
 
 ---
@@ -78,7 +78,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Dashboard Analytics</h2>
 
 <p align="center">
-  <img src="./screenshots/dashboard-analytics.png" width="100%">
+  <img src="./screenshots/dashboard-analytics.png" alt="Dashboard Analytics Screenshot" width="100%">
 </p>
 
 ---
@@ -86,7 +86,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Financial Dashboard</h2>
 
 <p align="center">
-  <img src="./screenshots/dashboard-finance.png" width="100%">
+  <img src="./screenshots/dashboard-finance.png" alt="Financial Dashboard Screenshot" width="100%">
 </p>
 
 ---
@@ -94,7 +94,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Vehicle Management</h2>
 
 <p align="center">
-  <img src="./screenshots/vehicles.png" width="100%">
+  <img src="./screenshots/vehicles.png" alt="Vehicle Management Screenshot" width="100%">
 </p>
 
 ---
@@ -102,7 +102,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Register Vehicle</h2>
 
 <p align="center">
-  <img src="./screenshots/register-vehicle.png" width="100%">
+  <img src="./screenshots/register-vehicle.png" alt="Register Vehicle Screenshot" width="100%">
 </p>
 
 ---
@@ -110,7 +110,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Driver Management</h2>
 
 <p align="center">
-  <img src="./screenshots/drivers.png" width="100%">
+  <img src="./screenshots/drivers.png" alt="Driver Management Screenshot" width="100%">
 </p>
 
 ---
@@ -118,7 +118,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Trip Management</h2>
 
 <p align="center">
-  <img src="./screenshots/trips.png" width="100%">
+  <img src="./screenshots/trips.png" alt="Trip Management Screenshot" width="100%">
 </p>
 
 ---
@@ -126,7 +126,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Maintenance Management</h2>
 
 <p align="center">
-  <img src="./screenshots/maintenance.png" width="100%">
+  <img src="./screenshots/maintenance.png" alt="Maintenance Management Screenshot" width="100%">
 </p>
 
 ---
@@ -134,7 +134,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Fuel Management</h2>
 
 <p align="center">
-  <img src="./screenshots/fuel.png" width="100%">
+  <img src="./screenshots/fuel.png" alt="Fuel Management Screenshot" width="100%">
 </p>
 
 ---
@@ -142,7 +142,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Expense Management</h2>
 
 <p align="center">
-  <img src="./screenshots/expenses.png" width="100%">
+  <img src="./screenshots/expenses.png" alt="Expense Management Screenshot" width="100%">
 </p>
 
 ---
@@ -150,7 +150,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Reports & Analytics</h2>
 
 <p align="center">
-  <img src="./screenshots/reports.png" width="100%">
+  <img src="./screenshots/reports.png" alt="Reports and Analytics Screenshot" width="100%">
 </p>
 
 ---
@@ -158,7 +158,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>User Management</h2>
 
 <p align="center">
-  <img src="./screenshots/user-management.png" width="100%">
+  <img src="./screenshots/user-management.png" alt="User Management Screenshot" width="100%">
 </p>
 
 ---
@@ -166,7 +166,7 @@ The platform is built using a strict Repository-Service architecture on the back
 <h2>Platform Settings</h2>
 
 <p align="center">
-  <img src="./screenshots/settings.png" width="100%">
+  <img src="./screenshots/settings.png" alt="Platform Settings Screenshot" width="100%">
 </p>
 
 ---
