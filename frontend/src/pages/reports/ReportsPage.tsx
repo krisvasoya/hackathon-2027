@@ -17,7 +17,8 @@ import { dashboardService } from '../../services/dashboard.service';
 import { auditService } from '../../services/audit.service';
 import { Card, CardBody, Button, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkReports } from '../../components/skeleton';
 
 // ─── Badge Helpers ─────────────────────────────────────────────────────────────
 
@@ -221,6 +222,8 @@ export default function ReportsPage(): React.JSX.Element {
     setEndDate('');
   };
 
+  const isLoading = isVehicleLoading || isDriverLoading || isTripLoading || isFuelLoading || isMaintenanceLoading || isExpenseLoading || isSummaryLoading || isAuditLoading;
+
   // ─── Export Logic ───
 
   const exportReport = (format: 'CSV' | 'Excel') => {
@@ -252,7 +255,7 @@ export default function ReportsPage(): React.JSX.Element {
         d.status,
       ]);
     } else if (activeTab === 'trip' && tripData) {
-      headers = ['Trip Number', 'Source', 'Destination', 'Cargo Weight (kg)', 'Revenue ($)', 'Status', 'Start Date'];
+      headers = ['Trip Number', 'Source', 'Destination', 'Cargo Weight (kg)', 'Revenue (INR)', 'Status', 'Start Date'];
       rows = tripData.data.map(t => [
         t.tripNumber,
         t.source,
@@ -263,7 +266,7 @@ export default function ReportsPage(): React.JSX.Element {
         t.tripStartTime ? formatDate(t.tripStartTime) : '—',
       ]);
     } else if (activeTab === 'fuel' && fuelData) {
-      headers = ['Vehicle Plate', 'Fuel Station', 'Liters (L)', 'Price / Liter', 'Total Cost', 'Refuel Date'];
+      headers = ['Vehicle Plate', 'Fuel Station', 'Liters (L)', 'Price / Liter (INR)', 'Total Cost (INR)', 'Refuel Date'];
       rows = fuelData.data.map(f => [
         f.vehicle?.registrationNumber || '—',
         f.fuelStation,
@@ -273,7 +276,7 @@ export default function ReportsPage(): React.JSX.Element {
         formatDate(f.date),
       ]);
     } else if (activeTab === 'maintenance' && maintenanceData) {
-      headers = ['Ticket Number', 'Vehicle Plate', 'Type', 'Priority', 'Scheduled Date', 'Workshop', 'Actual Cost', 'Status'];
+      headers = ['Ticket Number', 'Vehicle Plate', 'Type', 'Priority', 'Scheduled Date', 'Workshop', 'Actual Cost (INR)', 'Status'];
       rows = maintenanceData.data.map(m => [
         m.maintenanceNumber,
         m.vehicle?.registrationNumber || '—',
@@ -285,7 +288,7 @@ export default function ReportsPage(): React.JSX.Element {
         m.status,
       ]);
     } else if (activeTab === 'expense' && expenseData) {
-      headers = ['Vehicle Plate', 'Type', 'Amount ($)', 'Description', 'Transaction Date'];
+      headers = ['Vehicle Plate', 'Type', 'Amount (INR)', 'Description', 'Transaction Date'];
       rows = expenseData.data.map(e => [
         e.vehicle?.registrationNumber || '—',
         e.expenseType,
@@ -299,8 +302,8 @@ export default function ReportsPage(): React.JSX.Element {
         ['Total Vehicles', summaryData.kpis.totalVehicles],
         ['Available Vehicles', summaryData.kpis.availableVehicles],
         ['Active Dispatches', summaryData.kpis.activeTrips],
-        ['MTD Repairs Cost', `$${summaryData.kpis.maintenanceCostThisMonth.toLocaleString()}`],
-        ['Total Operational Expense', `$${summaryData.kpis.totalOperationalCost.toLocaleString()}`],
+        ['MTD Repairs Cost', summaryData.kpis.maintenanceCostThisMonth],
+        ['Total Operational Expense', summaryData.kpis.totalOperationalCost],
         ['Fleet Utilization', `${summaryData.kpis.fleetUtilization}%`],
         ['Fleet Health Rating', `${summaryData.kpis.fleetHealth}%`],
       ];
@@ -321,21 +324,15 @@ export default function ReportsPage(): React.JSX.Element {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `${reportName}.${format === 'CSV' ? 'csv' : 'csv'}`); // Excel reads CSV natively
+    link.setAttribute('download', `${reportName}.${format === 'CSV' ? 'csv' : 'csv'}`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const isLoading =
-    isVehicleLoading ||
-    isDriverLoading ||
-    isTripLoading ||
-    isFuelLoading ||
-    isMaintenanceLoading ||
-    isExpenseLoading ||
-    isSummaryLoading ||
-    isAuditLoading;
+  if (isLoading) {
+    return <SkReports />;
+  }
 
   return (
     <div className="space-y-6">
@@ -350,7 +347,6 @@ export default function ReportsPage(): React.JSX.Element {
             variant="secondary"
             onClick={() => exportReport('CSV')}
             leftIcon={<Download size={14} />}
-            disabled={isLoading}
             className="bg-white border-border"
           >
             Export CSV
@@ -359,7 +355,6 @@ export default function ReportsPage(): React.JSX.Element {
             variant="primary"
             onClick={() => exportReport('Excel')}
             leftIcon={<FileSpreadsheet size={14} />}
-            disabled={isLoading}
           >
             Export Excel
           </Button>
@@ -515,23 +510,7 @@ export default function ReportsPage(): React.JSX.Element {
 
       {/* Reports Table Layout */}
       <Card>
-        {isLoading ? (
-          <div className="p-6 space-y-4 animate-pulse">
-            {/* Mock Table Header skeleton */}
-            <div className="h-8 bg-surface rounded w-full mb-4" />
-            {/* Mock Rows skeleton */}
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex gap-4 items-center py-3 border-b border-border">
-                <div className="h-4 bg-surface rounded w-1/4" />
-                <div className="h-4 bg-surface rounded w-1/4" />
-                <div className="h-4 bg-surface rounded w-1/6" />
-                <div className="h-4 bg-surface rounded w-1/6" />
-                <div className="h-4 bg-surface rounded w-1/12" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
+        <div className="overflow-x-auto">
             {activeTab === 'vehicle' && vehicleData && (
               vehicleData.data.length === 0 ? (
                 <EmptyState />
@@ -566,7 +545,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'vehicle' && !vehicleData && !isLoading && <EmptyState />}
 
             {activeTab === 'driver' && driverData && (
               driverData.data.length === 0 ? (
@@ -602,7 +580,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'driver' && !driverData && !isLoading && <EmptyState />}
 
             {activeTab === 'trip' && tripData && (
               tripData.data.length === 0 ? (
@@ -638,7 +615,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'trip' && !tripData && !isLoading && <EmptyState />}
 
             {activeTab === 'fuel' && fuelData && (
               fuelData.data.length === 0 ? (
@@ -670,7 +646,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'fuel' && !fuelData && !isLoading && <EmptyState />}
 
             {activeTab === 'maintenance' && maintenanceData && (
               maintenanceData.data.length === 0 ? (
@@ -712,7 +687,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'maintenance' && !maintenanceData && !isLoading && <EmptyState />}
 
             {activeTab === 'expense' && expenseData && (
               expenseData.data.length === 0 ? (
@@ -746,7 +720,6 @@ export default function ReportsPage(): React.JSX.Element {
               </table>
               )
             )}
-            {activeTab === 'expense' && !expenseData && !isLoading && <EmptyState />}
 
             {activeTab === 'summary' && summaryData && (
               <table className="w-full text-left text-sm text-text-primary">
@@ -771,11 +744,11 @@ export default function ReportsPage(): React.JSX.Element {
                   </tr>
                   <tr className="table-row-hover">
                     <td className="px-6 py-3.5 font-bold">MTD Scheduled Repairs Cost</td>
-                    <td className="px-6 py-3.5 font-bold">${summaryData.kpis.maintenanceCostThisMonth.toLocaleString()}</td>
+                    <td className="px-6 py-3.5 font-bold">{formatCurrency(summaryData.kpis.maintenanceCostThisMonth)}</td>
                   </tr>
                   <tr className="table-row-hover">
                     <td className="px-6 py-3.5 font-bold">Total Operational Expenses</td>
-                    <td className="px-6 py-3.5 font-bold">${summaryData.kpis.totalOperationalCost.toLocaleString()}</td>
+                    <td className="px-6 py-3.5 font-bold">{formatCurrency(summaryData.kpis.totalOperationalCost)}</td>
                   </tr>
                   <tr className="table-row-hover">
                     <td className="px-6 py-3.5 font-bold">Average Fleet Utilization</td>
@@ -818,10 +791,8 @@ export default function ReportsPage(): React.JSX.Element {
                 </tbody>
               </table>
               )
-            )}
-            {activeTab === 'audit' && !auditData && !isLoading && <EmptyState />}
+            {activeTab === 'audit' && !auditData && <EmptyState />}
           </div>
-        )}
       </Card>
     </div>
   );
