@@ -49,6 +49,128 @@ The platform is built using a strict Repository-Service architecture on the back
 
 ---
 
+# 📸 Application Screenshots
+
+<h2>Login</h2>
+
+<p align="center">
+  <img src="./screenshots/login.png" width="100%">
+</p>
+
+---
+
+<h2>Enterprise Dashboard</h2>
+
+<p align="center">
+  <img src="./screenshots/dashboard.png" width="100%">
+</p>
+
+---
+
+<h2>Notifications Center</h2>
+
+<p align="center">
+  <img src="./screenshots/dashboard-notifications.png" width="100%">
+</p>
+
+---
+
+<h2>Dashboard Analytics</h2>
+
+<p align="center">
+  <img src="./screenshots/dashboard-analytics.png" width="100%">
+</p>
+
+---
+
+<h2>Financial Dashboard</h2>
+
+<p align="center">
+  <img src="./screenshots/dashboard-finance.png" width="100%">
+</p>
+
+---
+
+<h2>Vehicle Management</h2>
+
+<p align="center">
+  <img src="./screenshots/vehicles.png" width="100%">
+</p>
+
+---
+
+<h2>Register Vehicle</h2>
+
+<p align="center">
+  <img src="./screenshots/register-vehicle.png" width="100%">
+</p>
+
+---
+
+<h2>Driver Management</h2>
+
+<p align="center">
+  <img src="./screenshots/drivers.png" width="100%">
+</p>
+
+---
+
+<h2>Trip Management</h2>
+
+<p align="center">
+  <img src="./screenshots/trips.png" width="100%">
+</p>
+
+---
+
+<h2>Maintenance Management</h2>
+
+<p align="center">
+  <img src="./screenshots/maintenance.png" width="100%">
+</p>
+
+---
+
+<h2>Fuel Management</h2>
+
+<p align="center">
+  <img src="./screenshots/fuel.png" width="100%">
+</p>
+
+---
+
+<h2>Expense Management</h2>
+
+<p align="center">
+  <img src="./screenshots/expenses.png" width="100%">
+</p>
+
+---
+
+<h2>Reports & Analytics</h2>
+
+<p align="center">
+  <img src="./screenshots/reports.png" width="100%">
+</p>
+
+---
+
+<h2>User Management</h2>
+
+<p align="center">
+  <img src="./screenshots/user-management.png" width="100%">
+</p>
+
+---
+
+<h2>Platform Settings</h2>
+
+<p align="center">
+  <img src="./screenshots/settings.png" width="100%">
+</p>
+
+---
+
 ## 3. Business Workflow
 
 ```
