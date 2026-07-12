@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo.png" alt="TransitOps Logo" width="220" />
+  <img src="./assets/logo.png" alt="TransitOps Logo" width="420">
 </p>
 
 <h1 align="center">TransitOps</h1>
