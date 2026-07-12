@@ -42,7 +42,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Trips',
     path: ROUTES.TRIPS,
     icon: Route,
-    allowedRoles: ['SUPER_ADMIN', 'FLEET_MANAGER', 'DISPATCHER', 'DRIVER'],
+    allowedRoles: ['SUPER_ADMIN', 'FLEET_MANAGER', 'DISPATCHER', 'DRIVER', 'SAFETY_OFFICER', 'FINANCIAL_ANALYST'],
   },
   {
     label: 'Maintenance',

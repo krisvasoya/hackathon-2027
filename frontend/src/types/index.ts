@@ -122,6 +122,58 @@ export interface Driver {
   updatedAt: string;
 }
 
+// ─── Trip Types ───────────────────────────────────────────────────────────────
+
+export type TripStatus = 'DRAFT' | 'DISPATCHED' | 'COMPLETED' | 'CANCELLED';
+
+export interface Trip {
+  id: string;
+  tripNumber: string;
+  source: string;
+  destination: string;
+  vehicleId: string;
+  driverId: string;
+  cargoWeight: number;
+  plannedDistance: number;
+  actualDistance: number | null;
+  estimatedDuration: number;
+  tripStartTime: string | null;
+  tripEndTime: string | null;
+  startOdometer: number | null;
+  endOdometer: number | null;
+  tripRevenue: string;
+  remarks: string | null;
+  status: TripStatus;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+
+  vehicle?: {
+    id: string;
+    registrationNumber: string;
+    vehicleName: string;
+    vehicleModel: string;
+    vehicleType: string;
+    maximumLoadCapacity: number;
+  };
+  driver?: {
+    id: string;
+    fullName: string;
+    employeeId: string | null;
+    licenseNumber: string;
+    licenseCategory: string;
+    licenseExpiryDate: string;
+    phoneNumber: string;
+    safetyScore: number;
+  };
+  creator?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+}
+
 // ─── UI Component Base Types ──────────────────────────────────────────────────
 
 export type StatusVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral';

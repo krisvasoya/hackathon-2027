@@ -53,6 +53,7 @@ model User {
   updatedAt         DateTime   @updatedAt
 
   auditLogs AuditLog[]
+  trips     Trip[]
 
   @@index([email])
   @@index([employeeId])
@@ -109,6 +110,7 @@ model Vehicle {
   notes               String?
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
+  trips               Trip[]
 
   @@index([status])
   @@index([region])
@@ -140,11 +142,56 @@ model Driver {
   notes             String?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
+  trips             Trip[]
 
   @@index([licenseNumber])
   @@index([status])
   @@index([licenseExpiryDate])
   @@map("drivers")
 }
+
+// ─── Phase 3: Trip Engine Models ──────────────────────────────────────────────
+
+enum TripStatus {
+  DRAFT
+  DISPATCHED
+  COMPLETED
+  CANCELLED
+}
+
+model Trip {
+  id                String     @id @default(uuid())
+  tripNumber        String     @unique
+  source            String
+  destination       String
+  vehicleId         String
+  driverId          String
+  cargoWeight       Float
+  plannedDistance   Float
+  actualDistance    Float?
+  estimatedDuration Int // In minutes
+  tripStartTime     DateTime?
+  tripEndTime       DateTime?
+  startOdometer     Float?
+  endOdometer       Float?
+  tripRevenue       Decimal    @db.Decimal(12, 2)
+  remarks           String?
+  status            TripStatus @default(DRAFT)
+  createdBy         String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  driver  Driver  @relation(fields: [driverId], references: [id])
+  creator User    @relation(fields: [createdBy], references: [id])
+
+  @@index([tripNumber])
+  @@index([status])
+  @@index([vehicleId])
+  @@index([driverId])
+  @@index([createdAt])
+  @@map("trips")
+}
+
 
 

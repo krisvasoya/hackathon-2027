@@ -20,6 +20,7 @@ export const ROUTES = {
   VEHICLES: '/vehicles',
   DRIVERS: '/drivers',
   TRIPS: '/trips',
+  TRIP_DETAILS: '/trips/:id',
   MAINTENANCE: '/maintenance',
   FUEL: '/fuel',
   REPORTS: '/reports',
