@@ -1,109 +1,176 @@
-# 🚚 TransitOps
+<p align="center">
+  <img src="C:/Users/krish%20vasoya/.gemini/antigravity-ide/brain/351b0010-7f68-478b-8302-219807bd4b9b/transitops_enterprise_logo_1783831150172.png" alt="TransitOps Logo" width="220" />
+</p>
 
-### Enterprise Smart Transport Operations Platform
+<h1 align="center">TransitOps</h1>
 
-TransitOps is a modern, enterprise-grade Fleet Management Enterprise Resource Planning (ERP) platform developed specifically for the Odoo Hackathon 2027. It offers end-to-end telemetry tracking, automated driver-vehicle dispatch routing, real-time maintenance logs, and dynamic financial ledger analysis.
+<p align="center">
+  <strong>Enterprise Smart Transport Operations Platform</strong>
+</p>
 
-[![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black&style=flat-square)](#)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white&style=flat-square)](#)
-[![Node.js](https://img.shields.io/badge/Node.js-20.0-339933?logo=nodedotjs&logoColor=white&style=flat-square)](#)
-[![Express](https://img.shields.io/badge/Express-4.0-000000?logo=express&logoColor=white&style=flat-square)](#)
-[![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748?logo=prisma&logoColor=white&style=flat-square)](#)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14.0-4169E1?logo=postgresql&logoColor=white&style=flat-square)](#)
-[![License](https://img.shields.io/badge/License-Odoo_Hackathon-orange?style=flat-square)](#)
-
----
-
-## Overview
-
-TransitOps solves complex logistics problems by unifying operations into a single command center. 
-*   **What it is**: An ERP platform that streamlines vehicle tracking, driver scheduling, and expenses.
-*   **Who uses it**: Fleet Managers, Safety Officers, Financial Analysts, and Dispatchers.
-*   **Problem it solves**: Prevents driver double-booking, reduces maintenance downtime, and optimizes fuel costs.
-*   **Why it exists**: To replace fragmented tracking systems with an integrated, high-speed dashboard.
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black&style=flat-square" alt="React" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white&style=flat-square" alt="TypeScript" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Node.js-20.0-339933?logo=nodedotjs&logoColor=white&style=flat-square" alt="Node.js" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Express-4.0-000000?logo=express&logoColor=white&style=flat-square" alt="Express" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Prisma-5.0-2D3748?logo=prisma&logoColor=white&style=flat-square" alt="Prisma" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/PostgreSQL-14.0-4169E1?logo=postgresql&logoColor=white&style=flat-square" alt="PostgreSQL" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square" alt="Build" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/License-Odoo_Hackathon-orange?style=flat-square" alt="License" /></a>
+</p>
 
 ---
 
-## Key Features
+## 1. Introduction
 
-*   **Authentication**: Secure user session tracking using JWT access and refresh tokens.
-*   **RBAC**: Granular role-based controls (Super Admin, Fleet Manager, Safety Officer, Financial Analyst, Dispatcher, Driver).
-*   **Vehicle Management**: Fleet registry tracking odometers, registration numbers, and status indicators.
-*   **Driver Management**: Operator records auditing experience levels, telephone details, and safety scores.
-*   **Trip Management**: Automated dispatch engine locking driver/vehicle availability and matching weights.
-*   **Maintenance**: Active scheduling logs locking vehicle status to `IN_SHOP` during service.
-*   **Fuel Management**: Fuel log entries verifying quantity limits and cost-efficiency.
-*   **Expense Tracking**: Operational ledger records auto-synchronizing fuel receipts and repairs.
-*   **Enterprise Dashboard**: Interactive telemetry cockpit using responsive Recharts widgets.
-*   **Reports**: Dynamic reporting grid supporting text search, parameters filtering, and CSV/Excel exports.
-*   **Global Search**: Enterprise command bar query engine matching records in parallel.
-*   **Notifications**: Dynamic alerts bell showing license expirations and overdue actions.
-*   **Audit Logs**: Action auditing recording triggers, user emails, resource UUIDs, and client user-agents.
-*   **Responsive UI**: Modern interface optimized for all tablet, mobile, and desktop layouts.
+TransitOps is a high-performance Enterprise Resource Planning (ERP) platform custom-built for modern logistics, cargo routing, and fleet operations management. Developed as a production-grade submission for the Odoo Hackathon 2027, the platform centralizes vehicle tracking, driver scheduling, telemetry auditing, and operational accounting into a single interface.
+
+In transport logistics, operational inefficiencies manifest as driver double-bookings, unregistered fuel receipts, and uncoordinated repair schedules. TransitOps resolves these pain points through atomic validation rules that prevent driver assignment overlaps, block odometer rollbacks, and guarantee that vehicles locked in repair shops cannot be dispatched on trips.
+
+The platform is built using a strict Repository-Service architecture on the backend, complemented by a lazy-loaded, responsive React frontend. This setup ensures that fleet operations, safety compliance officers, and financial analysts can execute high-speed audits and compile reports concurrently.
 
 ---
 
-## Business Workflow
+## 2. Key Features
+
+- **Enterprise Authentication & Session Guards**: Stateless JSON Web Tokens (JWT) using secure cookie storage and custom encryption.
+- **Granular Role-Based Access Control (RBAC)**: Enforced authorization across Super Admin, Fleet Manager, Safety Officer, Financial Analyst, Dispatcher, and Driver profiles.
+- **Vehicle Asset Management**: Fleet registry tracking plates, regions, odometer readings, and availability status.
+- **Driver Operator Indexing**: Registry auditing operator credentials, emergency contacts, and real-time safety indices.
+- **Automated Dispatch Engine**: Logistics workflows handling weight validations, driver schedules, and status overrides.
+- **Active Maintenance Loop**: Ticket workflows locking vehicles to `IN_SHOP` and synchronizing actual repair costs to the general ledger.
+- **Fuel Tracking**: Receipt logger mapping liters, prices, stations, and vehicle odometer progression.
+- **Expense General Ledger**: Unified accounting ledger auto-recording maintenance, fuel, tolls, insurance, and parking costs.
+- **Dynamic Dashboard Cockpit**: Operations control center using Recharts to present line, bar, pie, and area charts.
+- **Enterprise Reports Dashboard**: Filterable tables supporting text searches, date constraints, and client-side CSV/Excel exports.
+- **Global Search Index**: Hotkey-triggered (`Cmd+K` / `Ctrl+K`) search console querying all modules in parallel.
+- **Alarm Center Notifications**: Bell dropdown indicator alerting operators to license expirations and overdue service tickets.
+- **Log Auditing**: Record auditing that tracks actions, user emails, IP addresses, resource IDs, and client user-agents.
+
+---
+
+## 3. Screenshots
+
+### Operations Command Center
+`[ Screenshot Placeholder: Enterprise Cockpit Telemetry Dashboard ]`
+
+### Fleet Registry
+`[ Screenshot Placeholder: Vehicles List & Status Indicators ]`
+
+### Driver Operator Profiles
+`[ Screenshot Placeholder: Driver Directory & Safety Scores ]`
+
+### Trip Dispatches
+`[ Screenshot Placeholder: Active Route Timelines ]`
+
+### Financial Ledger Reports
+`[ Screenshot Placeholder: Exportable Expense Sheets ]`
+
+---
+
+## 4. Business Workflow
 
 ```
-Login
-  ↓
-Register Vehicle
-  ↓
-Register Driver
-  ↓
-Create Trip (Draft)
-  ↓
-Dispatch Trip (ON_TRIP Lock)
-  ↓
-Complete Trip (Odometer Update)
-  ↓
-Maintenance (IN_SHOP Lock)
-  ↓
-Fuel & Expense (Auto-Sync to Ledger)
-  ↓
-Dashboard (Live KPI Updates)
-  ↓
-Reports (CSV / Excel Export)
+       [ Login ]
+           │
+           ▼
+  [ Register Vehicle ]
+           │
+           ▼
+   [ Register Driver ]
+           │
+           ▼
+   [ Create Trip Draft ]
+           │
+           ▼
+  [ Dispatch Route ] (ON_TRIP availability locks applied)
+           │
+           ▼
+   [ Complete Route ] (Updates odometer / releases operator)
+           │
+  ┌────────┴────────┐
+  ▼                 ▼
+[ Maintenance ]   [ Fuel & Expenses ] (Auto-syncs ledger transactions)
+  └────────┬────────┘
+           ▼
+ [ Dashboard Telemetry ] (Computes utilization indexes)
+           │
+           ▼
+[ Reports Audit Dossier ] (Compiles data lists for CSV/Excel export)
 ```
 
 ---
 
-## Technology Stack
+## 5. Technology Stack
 
-| Layer | Technology | Key Modules |
+| Component | Stack | Modules |
 | :--- | :--- | :--- |
-| **Frontend** | React 19, TypeScript, Tailwind CSS | Vite build engine, HTML5 Semantic structure |
-| **Backend** | Node.js, Express, TypeScript | Router index, Dependency client |
-| **Database** | PostgreSQL, Prisma ORM | Constraints validation, Performance indexes |
-| **Authentication** | JSON Web Tokens (JWT), bcrypt | Cookie Parser, Role check guards |
-| **Validation** | Zod, express-validator | Validation handlers middleware |
-| **Charts** | Recharts, Lucide Icons | Responsive SVG viewport layouts |
-| **Logging** | Winston Logger | Daily File Rotation, Event console transport |
+| **Frontend** | React 19, TypeScript, Tailwind CSS | Vite build engine, HTML5 semantic layout |
+| **Backend** | Node.js, Express, TypeScript | REST APIs Router index, Dependency client |
+| **Database** | PostgreSQL, Prisma ORM | Transaction handlers, Performance indexes |
+| **Authentication**| JSON Web Tokens (JWT), bcrypt | Cookie parser, Role check interceptors |
+| **Validation** | Zod, express-validator | Validation schemas middleware |
+| **Charts** | Recharts, Lucide Icons | Responsive SVG canvas graphics |
+| **Logging** | Winston Logger | Daily rotating files, Event console transport |
 
 ---
 
-## Project Structure
+## 6. System Architecture
+
+```
+                 ┌────────────────────────────────┐
+                 │        React Frontend          │
+                 │   (TopNavbar, ReportsPage)     │
+                 └───────────────┬────────────────┘
+                                 │ HTTP REST Requests (Axios / Signal)
+                                 ▼
+                 ┌────────────────────────────────┐
+                 │       Express REST API         │
+                 │  (Auth, Validate, Route Guard) │
+                 └───────────────┬────────────────┘
+                                 │
+                                 ▼
+                 ┌────────────────────────────────┐
+                 │    Business Services Layer     │
+                 │ (TripService, VehicleService)  │
+                 └───────────────┬────────────────┘
+                                 │ Transaction Scope
+                                 ▼
+                 ┌────────────────────────────────┐
+                 │    Data Repositories Layer     │
+                 │  (executeCompleteTransaction)  │
+                 └───────────────┬────────────────┘
+                                 │
+                                 ▼
+                 ┌────────────────────────────────┐
+                 │       Prisma client / DB       │
+                 │  (Indexed PostgreSQL tables)   │
+                 └────────────────────────────────┘
+```
+
+---
+
+## 7. Project Structure
 
 ```
 TransitOps/
 ├── backend/
-│   ├── prisma/             # Schema definitions and migrations
+│   ├── prisma/             # Schema models, database indexes, seed data
 │   ├── src/
-│   │   ├── config/         # System logs and server configs
-│   │   ├── controllers/    # API Request controllers
-│   │   ├── database/       # Database client connections
-│   │   ├── middleware/     # Auth, roles, and error handlers
-│   │   ├── repositories/   # Direct Prisma database interfaces
-│   │   ├── routes/         # Express endpoint definitions
+│   │   ├── config/         # System logger and server setups
+│   │   ├── controllers/    # API controllers mapping requests
+│   │   ├── database/       # Prisma client initializer
+│   │   ├── middleware/     # Auth checks, RBAC filters, global error handling
+│   │   ├── repositories/   # Base Prisma database interfaces
+│   │   ├── routes/         # Express router mount configurations
 │   │   ├── services/       # Core business workflows
-│   │   ├── utils/          # Hashing and response helpers
-│   │   ├── validators/     # Express validator schemas
-│   │   └── server.ts       # Main application entry point
+│   │   ├── utils/          # Hashing, response formatting, audit logs
+│   │   ├── validators/     # Request query/body validation schemas
+│   │   └── server.ts       # Application entry point
 ├── frontend/
 │   ├── src/
-│   │   ├── components/     # TopNavbars, Sidebars, and UI widgets
-│   │   ├── contexts/       # React AuthContext modules
+│   │   ├── components/     # TopNavbars, Sidebars, and skeleton widgets
+│   │   ├── contexts/       # React AuthContext setup
 │   │   ├── layouts/        # AppLayout grids
 │   │   ├── pages/          # Dashboard, Vehicles, Drivers, Trips
 │   │   ├── routes/         # ProtectedRoute guards and lists
@@ -116,16 +183,10 @@ TransitOps/
 
 ---
 
-## Setup
+## 8. Installation
 
-### Prerequisites
-* Node.js >= 20.0
-* PostgreSQL >= 14.0
-* npm package manager
+Configure and install the application dependencies locally:
 
-### 1. Installation
-
-Install dependencies for both projects:
 ```bash
 # Install backend dependencies
 cd backend
@@ -136,27 +197,18 @@ cd ../frontend
 npm install
 ```
 
-### 2. Configure Environment
-
-Set up `.env` files:
-```bash
-# Backend
-cd backend
-cp .env.example .env
-# Edit .env and configure DATABASE_URL, JWT_ACCESS_SECRET, and PORT
-
-# Frontend
-cd ../frontend
-cp .env.example .env
-```
-
 ---
 
-## Database Setup
+## 9. Database Setup
 
-Initialize the database schema and populate dummy records:
+Configure database parameters and generate the client interface:
+
 ```bash
+# Copy and edit local environment configurations
 cd backend
+cp .env.example .env
+
+# Initialize database schema and generate schema objects
 npx prisma generate
 npx prisma migrate dev --name init
 npm run prisma:seed
@@ -164,15 +216,16 @@ npm run prisma:seed
 
 ---
 
-## Running the Project
+## 10. Running the Project
 
-Launch development servers for both packages:
+Run development servers locally for the packages:
+
 ```bash
-# Start backend server (Terminal 1)
+# Start backend API (Terminal 1)
 cd backend
 npm run dev
 
-# Start frontend server (Terminal 2)
+# Start frontend application (Terminal 2)
 cd frontend
 npm run dev
 ```
@@ -219,103 +272,62 @@ TransitOps@2024!
 
 ---
 
-## API Overview
+## 11. API Overview
 
-*   **Authentication**:
-    *   `POST /api/auth/register` - Create client user account.
-    *   `POST /api/auth/login` - Authenticate account and retrieve JWT session cookies.
-    *   `POST /api/auth/logout` - Invalidate session cookies.
-*   **Vehicles**:
-    *   `GET /api/vehicles` - Paginated vehicle fleet records.
-    *   `POST /api/vehicles` - Register vehicle registry asset.
-*   **Drivers**:
-    *   `GET /api/drivers` - Paginated operator profiles.
-    *   `POST /api/drivers` - Create driver licensing metadata.
-*   **Trips**:
-    *   `POST /api/trips` - Create draft trip routes.
-    *   `PATCH /api/trips/:id/dispatch` - Transition trip to DISPATCHED state.
-    *   `PATCH /api/trips/:id/complete` - Mark route COMPLETED.
-*   **Maintenance**:
-    *   `POST /api/maintenance` - Schedule repair tickets.
-    *   `PATCH /api/maintenance/:id/complete` - Complete repairs and write expense.
-*   **Fuel**:
-    *   `POST /api/fuel` - Record fuel purchase and write expense.
-*   **Expenses**:
-    *   `GET /api/expenses` - Retrieve ledger entries.
-*   **Dashboard**:
-    *   `GET /api/dashboard` - Fetch KPI aggregates and Recharts datasets.
-*   **Reports**:
-    *   `GET /api/reports` - Query report logs datasets.
-*   **Search**:
-    *   `GET /api/search` - Parallelized global search.
-*   **Notifications**:
-    *   `GET /api/notifications` - Fetch active warning updates.
-*   **Audit Logs**:
-    *   `GET /api/audit-logs` - Query action audit trails.
+| Context | Endpoint | HTTP Method | Access Level | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Authentication**| `/api/auth/login` | `POST` | Public | Logs user in and sets cookie tokens |
+| | `/api/auth/logout` | `POST` | Private | Clears cookie tokens |
+| **Vehicles** | `/api/vehicles` | `GET` | User | Lists vehicles with filters |
+| | `/api/vehicles` | `POST` | Manager | Registers new vehicle |
+| **Drivers** | `/api/drivers` | `GET` | User | Lists drivers with safety score |
+| **Trips** | `/api/trips` | `POST` | Dispatcher | Creates a draft trip record |
+| | `/api/trips/:id/dispatch`| `PATCH` | Dispatcher | Dispatches trip (locks vehicle/driver) |
+| | `/api/trips/:id/complete`| `PATCH` | Dispatcher | Completes trip (releases vehicle/driver)|
+| **Maintenance** | `/api/maintenance`| `POST` | Manager | Schedules a vehicle maintenance ticket |
+| | `/api/maintenance/:id/complete`| `PATCH` | Manager | Closes maintenance and writes expense |
+| **Fuel** | `/api/fuel` | `POST` | User | Logs refuel receipt and writes expense |
+| **Expenses** | `/api/expenses` | `GET` | Finance | Lists general ledger items |
+| **Dashboard** | `/api/dashboard` | `GET` | User | Fetch live KPIs and Recharts datasets |
+| **Reports** | `/api/reports` | `GET` | User | Fetch lists for CSV/Excel export |
+| **Search** | `/api/search` | `GET` | User | Parallel search matching |
+| **Notifications** | `/api/notifications` | `GET` | User | Lists unread compliance indicators |
+| **Audit Logs** | `/api/audit-logs` | `GET` | Admin | Lists transaction audit trails |
 
 ---
 
-## Completed Modules
+## 12. Security Features
 
-*   **Authentication**: Access token issuance and route guard checking.
-*   **Vehicle Management**: Fleet tracking with odometer protections.
-*   **Driver Management**: Operator tracking with collision safeguards.
-*   **Trip Engine**: Automated dispatches and availability locks.
-*   **Maintenance**: Repair ticket loops locking availability.
-*   **Fuel**: Log logs updating vehicle odometers and expenses.
-*   **Expense**: General ledger logging fuel and workshop costs.
-*   **Dashboard**: Command cockpit telemetry graphs.
-*   **Reports**: Parameter grids supporting CSV/Excel downloads.
-*   **Notifications**: Unread counts with action dropdown alerts.
-*   **Audit Logs**: Action auditing recording triggers.
-*   **Global Search**: Trigram parallel matches.
+- **JWT Session Security**: Stateless cookie tokens checking session parameters.
+- **Granular RBAC**: Endpoint routing checked by express role check interceptors.
+- **Input Sanitization**: express-validator schemas preventing payload manipulations.
+- **Helmet Headers**: Configures security headers to prevent Clickjacking and MIME sniffing.
+- **CORS Constraints**: Origin constraint lists protecting backend routing.
+- **Event Auditing**: Automatic logging tracking changes to resources.
 
 ---
 
-## Security Features
+## 13. Performance Optimizations
 
-*   **JWT Authentication**: Encrypted credentials checking.
-*   **RBAC**: Role check interceptors protecting system routes.
-*   **Input Validation**: Schema matching validations using express-validator.
-*   **Helmet**: API security headers shielding response metadata.
-*   **CORS**: Configured origins routing lists.
-*   **Rate Limiting**: Block spam loops on requests.
-*   **Password Hashing**: String encrypting using bcrypt algorithms.
-*   **Audit Logs**: System operations logs tracking updates.
+- **Prisma Indexes**: Index structures on query fields (`tripStartTime`, `scheduledDate`).
+- **Transactions**: Multi-table database updates wrapped inside Prisma `$transaction()`.
+- **Parallel Queries**: Concurrency fetching using `Promise.all` to reduce dashboard load times.
+- **Lazy Loading & Code Splitting**: Page bundles loaded dynamically.
+- **Debounced Search**: Delayed query calls with active request cancellation.
 
 ---
 
-## Performance Optimizations
+## 14. Future Roadmap
 
-*   **Prisma Indexes**: Index structures on query fields (`tripStartTime`, `scheduledDate`).
-*   **Transactions**: Multi-table database updates wrapped inside Prisma `$transaction()`.
-*   **Parallel Queries**: Concurrency fetching using `Promise.all`.
-*   **Lazy Loading & Code Splitting**: Page bundles loaded dynamically.
-*   **Debounced Search**: Delayed query calls with active request cancellation.
-
----
-
-## Future Enhancements
-
-*   **AI Route Optimization**: Dynamic route modeling to reduce fuel use.
-*   **Predictive Maintenance**: Machine learning modeling to forecast wear.
-*   **GPS Tracking**: Live map view showing vehicle coordinates.
-*   **Mobile Application**: Mobile client app for drivers.
-*   **Cloud Deployment**: Dockerized container deployment patterns.
+- **AI Route Optimization**: Dynamic route modeling to reduce fuel use.
+- **Predictive Maintenance**: Machine learning modeling to forecast wear.
+- **GPS Integration**: Live map view showing vehicle coordinates.
+- **Mobile Application**: Mobile client app for drivers.
+- **Cloud Deployment**: Dockerized container deployment patterns.
 
 ---
 
-## Screenshots
+## 15. License
 
-*   **Dashboard**: Executive command telemetry layout overview.
-*   **Vehicles**: Fleet registry tracking catalog.
-*   **Drivers**: Operator registry detail tracking profiles.
-*   **Trips**: Dispatched routes tracking timelines.
-*   **Reports**: Query report export sheets catalog.
-
----
-
-## License
-
-This project was developed for the Odoo Hackathon 2027.
-It is intended for educational, demonstration, and hackathon evaluation purposes.
+Developed for the Odoo Hackathon 2027.
+Created for educational, demonstration and evaluation purposes.
