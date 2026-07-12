@@ -116,3 +116,35 @@ model Vehicle {
   @@map("vehicles")
 }
 
+enum DriverStatus {
+  AVAILABLE
+  ON_TRIP
+  OFF_DUTY
+  SUSPENDED
+}
+
+model Driver {
+  id                String       @id @default(uuid())
+  fullName          String
+  employeeId        String?      @unique
+  licenseNumber     String       @unique
+  licenseCategory   String
+  licenseExpiryDate DateTime
+  phoneNumber       String
+  email             String
+  safetyScore       Int          @default(100)
+  yearsOfExperience Int
+  address           String
+  emergencyContact  String
+  status            DriverStatus @default(AVAILABLE)
+  notes             String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([licenseNumber])
+  @@index([status])
+  @@index([licenseExpiryDate])
+  @@map("drivers")
+}
+
+

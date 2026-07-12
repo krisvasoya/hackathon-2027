@@ -99,6 +99,29 @@ export interface Vehicle {
   updatedAt: string;
 }
 
+// ─── Driver Types ─────────────────────────────────────────────────────────────
+
+export type DriverStatus = 'AVAILABLE' | 'ON_TRIP' | 'OFF_DUTY' | 'SUSPENDED';
+
+export interface Driver {
+  id: string;
+  fullName: string;
+  employeeId: string | null;
+  licenseNumber: string;
+  licenseCategory: string;
+  licenseExpiryDate: string;
+  phoneNumber: string;
+  email: string;
+  safetyScore: number;
+  yearsOfExperience: number;
+  address: string;
+  emergencyContact: string;
+  status: DriverStatus;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ─── UI Component Base Types ──────────────────────────────────────────────────
 
 export type StatusVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral';

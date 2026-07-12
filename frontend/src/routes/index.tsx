@@ -16,7 +16,7 @@ const UnauthorizedPage  = lazy(() => import('@pages/UnauthorizedPage'));
 
 // Phase 2+ pages (will be uncommented as modules are built)
 const VehiclesPage    = lazy(() => import('@pages/vehicles/VehiclesPage'));
-// const DriversPage     = lazy(() => import('../pages/drivers/DriversPage'));
+const DriversPage     = lazy(() => import('@pages/drivers/DriversPage'));
 // const TripsPage       = lazy(() => import('../pages/trips/TripsPage'));
 // const MaintenancePage = lazy(() => import('../pages/maintenance/MaintenancePage'));
 // const FuelPage        = lazy(() => import('../pages/fuel/FuelPage'));
@@ -73,6 +73,14 @@ const router = createBrowserRouter([
         element: (
           <SuspenseWrapper>
             <VehiclesPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: ROUTES.DRIVERS,
+        element: (
+          <SuspenseWrapper>
+            <DriversPage />
           </SuspenseWrapper>
         ),
       },

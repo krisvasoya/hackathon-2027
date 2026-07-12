@@ -2,6 +2,7 @@ import { Router } from 'express';
 import healthRoutes from './health.routes';
 import authRoutes from './auth.routes';
 import vehicleRoutes from './vehicle.routes';
+import driverRoutes from './driver.routes';
 
 // ─── Root API Router ──────────────────────────────────────────────────────────
 // All routes are mounted here and imported once in app.ts.
@@ -12,6 +13,7 @@ const router = Router();
 router.use('/health', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/vehicles', vehicleRoutes);
+router.use('/drivers', driverRoutes);
 
 // Phase 2+ modules will be mounted here:
 // router.use('/vehicles', authenticate, vehicleRoutes);
