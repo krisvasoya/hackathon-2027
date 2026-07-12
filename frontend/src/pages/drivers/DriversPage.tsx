@@ -25,10 +25,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { driverService, DriverInput } from '../../services/driver.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { Driver, DriverStatus } from '../../types';
 import { formatDate } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // ─── Zod Schema for Driver ────────────────────────────────────────────────────
 const driverSchema = z.object({
@@ -69,7 +70,7 @@ export default function DriversPage(): React.JSX.Element {
   const queryClient = useQueryClient();
 
   const isEditor = hasRole(['SUPER_ADMIN', 'FLEET_MANAGER', 'SAFETY_OFFICER']);
-  const isSuperAdmin = hasRole(['SUPER_ADMIN']);
+
 
   // State
   const [page, setPage] = useState(1);
@@ -280,6 +281,10 @@ export default function DriversPage(): React.JSX.Element {
     }
   };
 
+  if (isLoading || !data) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />;
+  }
+
   return (
     <div className="space-y-6">
       {/* ─── Page Header ─── */}
@@ -398,18 +403,13 @@ export default function DriversPage(): React.JSX.Element {
 
       {/* ─── Drivers Table Grid ─── */}
       <Card>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Fetching driver profiles...</p>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
             <h3 className="font-semibold">Failed to load drivers database</h3>
             <p className="text-xs text-text-secondary mt-1">{(error as Error).message || 'Database connection error'}</p>
           </div>
-        ) : !data || data.data.length === 0 ? (
+        ) : data.data.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-6">
             <Compass size={40} className="text-text-muted mb-3" />
             <h3 className="text-sm font-semibold text-text-primary">No drivers found</h3>
@@ -424,13 +424,13 @@ export default function DriversPage(): React.JSX.Element {
                     className="px-6 py-3 cursor-pointer select-none hover:text-text-primary"
                     onClick={() => handleSort('fullName')}
                   >
-                    Name {sortBy === 'fullName' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+                    Driver Name {sortBy === 'fullName' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                   </th>
                   <th
                     className="px-6 py-3 cursor-pointer select-none hover:text-text-primary"
                     onClick={() => handleSort('employeeId')}
                   >
-                    Emp ID {sortBy === 'employeeId' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+                    Employee ID {sortBy === 'employeeId' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                   </th>
                   <th
                     className="px-6 py-3 cursor-pointer select-none hover:text-text-primary"
@@ -438,8 +438,7 @@ export default function DriversPage(): React.JSX.Element {
                   >
                     License Number {sortBy === 'licenseNumber' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                   </th>
-                  <th className="px-6 py-3">Category</th>
-                  <th className="px-6 py-3">Phone</th>
+                  <th className="px-6 py-3 text-xs text-text-secondary">Phone Number</th>
                   <th
                     className="px-6 py-3 cursor-pointer select-none hover:text-text-primary"
                     onClick={() => handleSort('safetyScore')}
@@ -452,26 +451,39 @@ export default function DriversPage(): React.JSX.Element {
                   >
                     Status {sortBy === 'status' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                   </th>
-                  <th
-                    className="px-6 py-3 cursor-pointer select-none hover:text-text-primary"
-                    onClick={() => handleSort('licenseExpiryDate')}
-                  >
-                    License Expiry {sortBy === 'licenseExpiryDate' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
-                  </th>
                   <th className="px-6 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border bg-white">
                 {data.data.map((driver) => (
                   <tr key={driver.id} className="table-row-hover">
-                    <td className="px-6 py-3.5 font-medium">{driver.fullName}</td>
-                    <td className="px-6 py-3.5 text-text-secondary">{driver.employeeId || '—'}</td>
-                    <td className="px-6 py-3.5 font-mono text-xs font-semibold">{driver.licenseNumber}</td>
-                    <td className="px-6 py-3.5 text-text-secondary">{driver.licenseCategory}</td>
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-brand-light border border-brand/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-xs font-semibold text-brand">
+                            {driver.fullName
+                              .split(' ')
+                              .map((n) => n.charAt(0))
+                              .join('')
+                              .toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-medium text-text-primary truncate">{driver.fullName}</p>
+                          <p className="text-xs text-text-secondary truncate">{driver.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-3.5 font-mono text-xs text-text-secondary">
+                      {driver.employeeId || '—'}
+                    </td>
+                    <td className="px-6 py-3.5 font-mono text-xs text-text-secondary">
+                      {driver.licenseNumber} ({driver.licenseCategory})
+                    </td>
                     <td className="px-6 py-3.5 text-text-secondary text-xs">{driver.phoneNumber}</td>
                     <td className="px-6 py-3.5">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold border ${safetyScoreBadgeColor(driver.safetyScore)}`}>
-                        {driver.safetyScore}
+                        {driver.safetyScore}/100
                       </span>
                     </td>
                     <td className="px-6 py-3.5">
@@ -479,12 +491,11 @@ export default function DriversPage(): React.JSX.Element {
                         {driver.status.replace('_', ' ')}
                       </Badge>
                     </td>
-                    <td className="px-6 py-3.5 text-xs text-text-secondary">{formatDate(driver.licenseExpiryDate)}</td>
                     <td className="px-6 py-3.5 text-right space-x-1.5 whitespace-nowrap">
                       <button
                         onClick={() => openView(driver)}
                         className="text-text-secondary hover:text-brand transition-colors p-1"
-                        title="View Profile"
+                        title="View Details"
                       >
                         <Eye size={15} />
                       </button>
@@ -494,18 +505,18 @@ export default function DriversPage(): React.JSX.Element {
                           <button
                             onClick={() => openEditForm(driver)}
                             className="text-text-secondary hover:text-brand transition-colors p-1"
-                            title="Edit Driver Profile"
+                            title="Edit Driver"
                           >
                             <Edit2 size={15} />
                           </button>
 
-                          {/* Quick Status Control */}
+                          {/* Quick Status Change */}
                           <select
                             value={driver.status}
                             onChange={(e) =>
                               statusMutation.mutate({ id: driver.id, status: e.target.value as DriverStatus })
                             }
-                            className="h-7 px-1.5 border border-border rounded bg-white text-xs focus:ring-1 focus:ring-brand text-text-primary font-medium"
+                            className="h-7 px-1.5 border border-border rounded bg-white text-xs focus:ring-1 focus:ring-brand text-text-primary"
                             title="Quick status change"
                           >
                             <option value="AVAILABLE">Available</option>
@@ -514,20 +525,18 @@ export default function DriversPage(): React.JSX.Element {
                             <option value="SUSPENDED">Suspended</option>
                           </select>
 
-                          {isSuperAdmin && (
-                            <button
-                              onClick={() => openDelete(driver)}
-                              disabled={driver.status === 'ON_TRIP'}
-                              className={`${
-                                driver.status === 'ON_TRIP'
-                                  ? 'text-text-muted cursor-not-allowed opacity-50'
-                                  : 'text-text-secondary hover:text-status-danger'
-                              } transition-colors p-1`}
-                              title={driver.status === 'ON_TRIP' ? 'Active drivers cannot be deleted' : 'Delete Driver'}
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          )}
+                          <button
+                            onClick={() => openDelete(driver)}
+                            disabled={driver.status === 'ON_TRIP'}
+                            className={`${
+                              driver.status === 'ON_TRIP'
+                                ? 'text-text-muted cursor-not-allowed opacity-50'
+                                : 'text-text-secondary hover:text-status-danger'
+                            } transition-colors p-1`}
+                            title={driver.status === 'ON_TRIP' ? 'Drivers on a trip cannot be deleted' : 'Delete Driver'}
+                          >
+                            <Trash2 size={15} />
+                          </button>
                         </>
                       )}
                     </td>
