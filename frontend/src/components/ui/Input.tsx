@@ -45,7 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div className="relative flex items-center">
           {leftIcon && (
-            <span className="absolute left-3 text-text-muted flex-shrink-0">
+            <span className="absolute left-3 top-0 bottom-0 flex items-center text-text-muted flex-shrink-0">
               {leftIcon}
             </span>
           )}
@@ -74,7 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
 
           {rightIcon && (
-            <span className="absolute right-3 text-text-muted flex-shrink-0">
+            <span className="absolute right-3 top-0 bottom-0 flex items-center text-text-muted flex-shrink-0">
               {rightIcon}
             </span>
           )}
