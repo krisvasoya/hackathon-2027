@@ -174,7 +174,9 @@ export default function UsersPage(): React.JSX.Element {
       <Card>
         <CardBody className="flex flex-col md:flex-row items-center gap-3 py-4 px-5">
           <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={15} />
+            <span className="absolute left-3 top-0 bottom-0 flex items-center text-text-muted pointer-events-none">
+              <Search size={15} />
+            </span>
             <input
               type="text"
               placeholder="Search by name or email..."
