@@ -23,6 +23,8 @@ const MaintenancePage = lazy(() => import('@pages/maintenance/MaintenancePage'))
 const FuelPage        = lazy(() => import('@pages/fuel/FuelPage'));
 const ExpensePage     = lazy(() => import('@pages/expense/ExpensePage'));
 const ReportsPage     = lazy(() => import('@pages/reports/ReportsPage'));
+const UsersPage       = lazy(() => import('@pages/admin/UsersPage'));
+const SettingsPage    = lazy(() => import('@pages/settings/SettingsPage'));
 
 // ─── Suspense Wrapper ─────────────────────────────────────────────────────────
 
@@ -129,6 +131,22 @@ const router = createBrowserRouter([
         element: (
           <SuspenseWrapper>
             <ReportsPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: ROUTES.USERS,
+        element: (
+          <SuspenseWrapper>
+            <UsersPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: ROUTES.SETTINGS,
+        element: (
+          <SuspenseWrapper>
+            <SettingsPage />
           </SuspenseWrapper>
         ),
       },
