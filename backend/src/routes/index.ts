@@ -11,6 +11,7 @@ import dashboardRoutes from './dashboard.routes';
 import searchRoutes from './search.routes';
 import notificationRoutes from './notification.routes';
 import auditRoutes from './audit.routes';
+import userRoutes from './user.routes';
 
 // ─── Root API Router ──────────────────────────────────────────────────────────
 // All routes are mounted here and imported once in app.ts.
@@ -30,5 +31,6 @@ router.use('/dashboard', dashboardRoutes);
 router.use('/search', searchRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/audit-logs', auditRoutes);
+router.use('/users', userRoutes);
 
 export default router;

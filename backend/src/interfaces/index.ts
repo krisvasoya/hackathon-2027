@@ -11,6 +11,21 @@ export interface IUserRepository {
   incrementFailedLogin(id: string): Promise<void>;
   resetFailedLogin(id: string): Promise<void>;
   lockAccount(id: string, until: Date): Promise<void>;
+  findMany(params: {
+    page: number;
+    limit: number;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+    search?: string;
+    role?: UserRole;
+    status?: UserStatus;
+  }): Promise<User[]>;
+  count(params: {
+    search?: string;
+    role?: UserRole;
+    status?: UserStatus;
+  }): Promise<number>;
+  update(id: string, data: Partial<User>): Promise<User>;
 }
 
 // ─── Service Interfaces ───────────────────────────────────────────────────────
