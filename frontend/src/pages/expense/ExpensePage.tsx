@@ -10,8 +10,7 @@ import {
   SlidersHorizontal,
   AlertTriangle,
   X,
-  FileText,
-  DollarSign,
+  IndianRupee,
   TrendingUp,
   Percent,
 } from 'lucide-react';
@@ -19,10 +18,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { expenseService, ExpenseInput } from '../../services/expense.service';
 import { vehicleService } from '../../services/vehicle.service';
 import { tripService } from '../../services/trip.service';
-import { Card, CardBody, Button, Input, Badge, LoadingSpinner } from '../../components/ui';
+import { Card, CardBody, Button, Input, Badge } from '../../components/ui';
 import { QUERY_KEYS } from '../../constants';
 import { Expense } from '../../types';
-import { formatDate } from '../../utils';
+import { formatDate, formatCurrency } from '../../utils';
+import { SkListPage } from '../../components/skeleton';
 
 // Zod Schema for Expense registration
 const expenseSchema = z.object({
@@ -167,6 +167,10 @@ export default function ExpensePage(): React.JSX.Element {
     }
   };
 
+  if (isLoading || (vehicleFilter && isStatsLoading) || !data) {
+    return <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />;
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -184,14 +188,7 @@ export default function ExpensePage(): React.JSX.Element {
 
       {/* ─── Vehicle ROI Analysis Panel (Display when vehicle filter is selected) ─── */}
       {vehicleFilter ? (
-        isStatsLoading ? (
-          <Card>
-            <CardBody className="py-8 flex flex-col items-center justify-center gap-2">
-              <LoadingSpinner size="md" />
-              <p className="text-xs text-text-secondary">Recalculating ROI metrics...</p>
-            </CardBody>
-          </Card>
-        ) : vehicleStats ? (
+        vehicleStats && (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in">
             {/* Operational Cost Card */}
             <Card className="border-l-4 border-l-status-warning bg-surface">
@@ -199,14 +196,14 @@ export default function ExpensePage(): React.JSX.Element {
                 <div>
                   <p className="text-2xs font-semibold text-text-secondary uppercase">Operational Cost</p>
                   <p className="text-lg font-bold mt-1 text-text-primary">
-                    ${Number(vehicleStats.totalOperationalCost).toLocaleString()}
+                    {formatCurrency(vehicleStats.totalOperationalCost)}
                   </p>
                   <p className="text-[10px] text-text-muted mt-0.5">
-                    Fuel: ${Number(vehicleStats.totalFuel).toLocaleString()} | Maint: ${Number(vehicleStats.totalMaintenance).toLocaleString()}
+                    Fuel: {formatCurrency(vehicleStats.totalFuel)} | Maint: {formatCurrency(vehicleStats.totalMaintenance)}
                   </p>
                 </div>
                 <div className="p-2.5 bg-status-warning-bg rounded">
-                  <DollarSign size={18} className="text-status-warning" />
+                  <IndianRupee size={18} className="text-status-warning" />
                 </div>
               </CardBody>
             </Card>
@@ -217,7 +214,7 @@ export default function ExpensePage(): React.JSX.Element {
                 <div>
                   <p className="text-2xs font-semibold text-text-secondary uppercase">Total Revenue</p>
                   <p className="text-lg font-bold mt-1 text-text-primary">
-                    ${Number(vehicleStats.totalRevenue).toLocaleString()}
+                    {formatCurrency(vehicleStats.totalRevenue)}
                   </p>
                   <p className="text-[10px] text-text-muted mt-0.5">Completed transit logs</p>
                 </div>
@@ -233,12 +230,12 @@ export default function ExpensePage(): React.JSX.Element {
                 <div>
                   <p className="text-2xs font-semibold text-text-secondary uppercase">Vehicle ROI</p>
                   <p className={`text-lg font-bold mt-1 ${vehicleStats.roi >= 0 ? 'text-brand' : 'text-status-danger'}`}>
-                    ${Number(vehicleStats.roi).toLocaleString()}
+                    {formatCurrency(vehicleStats.roi)}
                   </p>
                   <p className="text-[10px] text-text-muted mt-0.5">Revenue - Ops Cost</p>
                 </div>
                 <div className={`p-2.5 ${vehicleStats.roi >= 0 ? 'bg-brand-light' : 'bg-status-danger-bg'} rounded`}>
-                  <DollarSign size={18} className={vehicleStats.roi >= 0 ? 'text-brand' : 'text-status-danger'} />
+                  <IndianRupee size={18} className={vehicleStats.roi >= 0 ? 'text-brand' : 'text-status-danger'} />
                 </div>
               </CardBody>
             </Card>
@@ -261,7 +258,7 @@ export default function ExpensePage(): React.JSX.Element {
               </CardBody>
             </Card>
           </div>
-        ) : null
+        )
       ) : (
         <Card className="bg-surface border-dashed border-border py-4 px-5 flex items-center justify-between">
           <p className="text-xs text-text-secondary">
@@ -372,21 +369,18 @@ export default function ExpensePage(): React.JSX.Element {
       {/* Ledger Table */}
       <Card>
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <LoadingSpinner size="lg" />
-            <p className="text-sm text-text-secondary">Loading financial ledger...</p>
-          </div>
+          <SkListPage rows={10} cols={6} filters={3} hasButton={isEditor} />
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-status-danger px-6">
             <AlertTriangle size={36} className="mb-2" />
-            <h3 className="font-semibold">Failed to load ledger logs</h3>
-            <p className="text-xs text-text-secondary mt-1">{(error as Error).message}</p>
+            <h3 className="font-semibold">Failed to load expense logs</h3>
+            <p className="text-xs text-text-secondary mt-1">{(error as Error).message || 'Database connection error'}</p>
           </div>
         ) : !data || data.data.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-            <FileText size={40} className="text-text-muted mb-3" />
-            <h3 className="text-sm font-semibold text-text-primary">No expense entries found</h3>
-            <p className="text-xs text-text-secondary mt-1">Record toll tickets, repair costs, or select a vehicle filter.</p>
+            <IndianRupee size={40} className="text-text-muted mb-3" />
+            <h3 className="text-sm font-semibold text-text-primary">No expenses recorded</h3>
+            <p className="text-xs text-text-secondary mt-1">Add general operational ledger cost records.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -417,7 +411,7 @@ export default function ExpensePage(): React.JSX.Element {
                       </Badge>
                     </td>
                     <td className="px-6 py-3.5 text-text-secondary">{expense.description}</td>
-                    <td className="px-6 py-3.5 font-semibold text-text-primary">${Number(expense.amount).toLocaleString()}</td>
+                    <td className="px-6 py-3.5 font-semibold text-text-primary">{formatCurrency(expense.amount)}</td>
                     <td className="px-6 py-3.5 text-text-secondary text-xs">{formatDate(expense.date)}</td>
                     {hasRole(['SUPER_ADMIN', 'FLEET_MANAGER']) && (
                       <td className="px-6 py-3.5 text-right">
@@ -479,7 +473,7 @@ export default function ExpensePage(): React.JSX.Element {
           <div className="bg-white rounded border border-border w-full max-w-lg shadow-modal animate-slide-in overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface">
               <h3 className="font-semibold text-text-primary text-base flex items-center gap-2">
-                <DollarSign size={18} className="text-brand" /> Record Ledger Expense
+                <IndianRupee size={18} className="text-brand" /> Record Ledger Expense
               </h3>
               <button onClick={() => setIsCreateOpen(false)} className="text-text-muted hover:text-text-primary">
                 <X size={18} />
@@ -543,7 +537,7 @@ export default function ExpensePage(): React.JSX.Element {
 
                 <Input
                   {...register('amount')}
-                  label="Expense Amount ($)"
+                  label="Amount (₹)"
                   type="number"
                   step="any"
                   required
