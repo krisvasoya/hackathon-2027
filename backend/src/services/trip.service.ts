@@ -241,6 +241,23 @@ export class TripService {
       );
     }
 
+    // Check for any active overlapping dispatched trips for this driver
+    const overlappingActiveTrip = await prisma.trip.findFirst({
+      where: {
+        driverId: trip.driverId,
+        status: TripStatus.DISPATCHED,
+        id: { not: trip.id },
+      },
+    });
+
+    if (overlappingActiveTrip) {
+      throw new AppError(
+        `Business Rule Violation: Driver is already assigned to active dispatched trip (${overlappingActiveTrip.tripNumber}).`,
+        HTTP_STATUS.BAD_REQUEST,
+        ERROR_CODES.VALIDATION_ERROR
+      );
+    }
+
     // 3. License expiry validation
     if (new Date(driver.licenseExpiryDate) < new Date()) {
       throw new AppError(
