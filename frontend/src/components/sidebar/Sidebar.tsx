@@ -108,7 +108,7 @@ export function Sidebar(): React.JSX.Element {
         <img src="/assets/logo.png" alt="TransitOps Logo" className="h-7 w-7 object-contain flex-shrink-0" />
         <div>
           <p className="text-sm font-bold text-text-primary leading-none">TransitOps</p>
-          <p className="text-2xs text-text-muted mt-0.5">Fleet Operations</p>
+          <p className="text-2xs text-text-muted mt-0.5">Enterprise Fleet ERP</p>
         </div>
       </div>
 
@@ -161,27 +161,6 @@ export function Sidebar(): React.JSX.Element {
           </ul>
         </div>
       </nav>
-
-      {/* ─── User Info ─── */}
-      {user && (
-        <div className="border-t border-border px-3 py-3 flex-shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-brand-light border border-brand/20 flex items-center justify-center flex-shrink-0">
-              <span className="text-2xs font-semibold text-brand">
-                {user.firstName.charAt(0)}{user.lastName.charAt(0)}
-              </span>
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-text-primary truncate">
-                {user.firstName} {user.lastName}
-              </p>
-              <Badge variant="neutral" className="mt-0.5 text-2xs">
-                {ROLE_LABELS[user.role]}
-              </Badge>
-            </div>
-          </div>
-        </div>
-      )}
     </aside>
   );
 }
