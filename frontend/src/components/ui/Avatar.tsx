@@ -3,8 +3,8 @@ import { getInitials } from '../../utils';
 import { cn } from '../../utils';
 
 interface AvatarProps {
-  firstName: string;
-  lastName: string;
+  firstName?: string | null;
+  lastName?: string | null;
   avatarUrl?: string | null;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
