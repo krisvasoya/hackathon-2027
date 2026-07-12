@@ -173,7 +173,11 @@ async function main(): Promise<void> {
 
   const superAdmin = await prisma.user.upsert({
     where: { email: 'admin@transitops.com' },
-    update: {},
+    update: {
+      passwordHash: defaultPassword,
+      role: UserRole.SUPER_ADMIN,
+      status: UserStatus.ACTIVE,
+    },
     create: {
       employeeId: 'EMP-0001',
       email: 'admin@transitops.com',
@@ -191,7 +195,11 @@ async function main(): Promise<void> {
 
   const fleetManager = await prisma.user.upsert({
     where: { email: 'fleet.manager@transitops.com' },
-    update: {},
+    update: {
+      passwordHash: defaultPassword,
+      role: UserRole.FLEET_MANAGER,
+      status: UserStatus.ACTIVE,
+    },
     create: {
       employeeId: 'EMP-0002',
       email: 'fleet.manager@transitops.com',
@@ -209,7 +217,11 @@ async function main(): Promise<void> {
 
   const safetyOfficer = await prisma.user.upsert({
     where: { email: 'safety.officer@transitops.com' },
-    update: {},
+    update: {
+      passwordHash: defaultPassword,
+      role: UserRole.SAFETY_OFFICER,
+      status: UserStatus.ACTIVE,
+    },
     create: {
       employeeId: 'EMP-0003',
       email: 'safety.officer@transitops.com',
@@ -227,7 +239,11 @@ async function main(): Promise<void> {
 
   const financialAnalyst = await prisma.user.upsert({
     where: { email: 'finance@transitops.com' },
-    update: {},
+    update: {
+      passwordHash: defaultPassword,
+      role: UserRole.FINANCIAL_ANALYST,
+      status: UserStatus.ACTIVE,
+    },
     create: {
       employeeId: 'EMP-0004',
       email: 'finance@transitops.com',
